@@ -1,0 +1,6 @@
+.formulario { display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+label { display: flex; flex-direction: column; gap: 4px; font-weight: 600; }
+.check { flex-direction: row; align-items: center; gap: 8px; }
+.error { color: #b42318; }
+.acciones { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }

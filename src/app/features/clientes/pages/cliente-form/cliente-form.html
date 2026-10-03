@@ -1,1 +1,71 @@
-<p>cliente-form works!</p>
+<section class="page">
+  <h2>{{ esEdicion() ? 'Editar cliente' : 'Nuevo cliente' }}</h2>
+
+  @if (error()) {
+    <div class="alerta">{{ error() }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="guardar()" class="card formulario">
+    <div class="grid-2">
+      <label>
+        DNI
+        <input class="input" formControlName="dni" maxlength="8" />
+        @if (form.controls.dni.touched && form.controls.dni.invalid) {
+          <small class="error">El DNI debe contener exactamente 8 dígitos.</small>
+        }
+        @if (erroresServidor()['dni']; as mensaje) {
+          <small class="error">{{ mensaje }}</small>
+        }
+      </label>
+    </div>
+
+    <div class="grid-2">
+      <label>
+        Nombres
+        <input class="input" formControlName="nombres" />
+        @if (form.controls.nombres.touched && form.controls.nombres.invalid) {
+          <small class="error">Obligatorio (máximo 60 caracteres).</small>
+        }
+      </label>
+
+      <label>
+        Apellidos
+        <input class="input" formControlName="apellidos" />
+        @if (form.controls.apellidos.touched && form.controls.apellidos.invalid) {
+          <small class="error">Obligatorio (máximo 60 caracteres).</small>
+        }
+      </label>
+    </div>
+
+    <div class="grid-2">
+      <label>
+        Correo Electrónico
+        <input type="email" class="input" formControlName="email" />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <small class="error">Ingrese un correo válido.</small>
+        }
+      </label>
+
+      <label>
+        Teléfono
+        <input class="input" formControlName="telefono" maxlength="9" />
+      </label>
+    </div>
+
+    <label>
+      Dirección
+      <input class="input" formControlName="direccion" maxlength="250" />
+    </label>
+
+    <label class="check">
+      <input type="checkbox" formControlName="estado" /> Activo
+    </label>
+
+    <div class="acciones">
+      <a routerLink="/clientes" class="btn">Cancelar</a>
+      <button type="submit" class="btn btn-primary" [disabled]="guardando()">
+        {{ guardando() ? 'Guardando...' : (esEdicion() ? 'Actualizar' : 'Registrar') }}
+      </button>
+    </div>
+  </form>
+</section>
