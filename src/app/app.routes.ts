@@ -19,6 +19,17 @@ export const routes: Routes = [
       {
         path: 'clientes',
         loadChildren: () => import('./features/clientes/clientes.routes').then(m => m.CLIENTES_ROUTES)
+<<<<<<< Updated upstream
+=======
+      },
+      {
+        path: 'productos',
+        loadChildren: () => import('./features/productos/productos.routes').then(m => m.PRODUCTOS_ROUTES)
+      },
+      {
+        path: 'ventas',
+        loadChildren: () => import('./features/ventas/ventas.routes').then(m => m.VENTAS_ROUTES)
+>>>>>>> Stashed changes
       }
     ]
   },

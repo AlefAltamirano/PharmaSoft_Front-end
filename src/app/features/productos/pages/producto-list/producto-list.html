@@ -1,0 +1,76 @@
+<section class="page">
+  <header class="page-header">
+    <h2>Productos</h2>
+    <a routerLink="nuevo" class="btn btn-primary">+ Nuevo producto</a>
+  </header>
+
+  <div class="filtros">
+    <label>
+      Categoría
+      <select class="input" (change)="filtrarPorCategoria($event)">
+        <option value="">Todas las categorías</option>
+        @for (categoria of categorias(); track categoria.id) {
+          <option [value]="categoria.id">{{ categoria.nombre }}</option>
+        }
+      </select>
+    </label>
+    <label>
+      Registros por página
+      <select class="input" (change)="cambiarTamanio($event)" [value]="tamanio()">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+      </select>
+    </label>
+  </div>
+
+  @if (error()) {
+    <div class="alerta">{{ error() }}</div>
+  }
+
+  @if (cargando()) {
+    <p>Cargando productos...</p>
+  } @else {
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>ID <button type="button" class="orden" (click)="ordenar('id')">↕</button></th>
+          <th>Nombre <button type="button" class="orden" (click)="ordenar('nombre')">↕</button></th>
+          <th>Categoría</th>
+          <th>Precio <button type="button" class="orden" (click)="ordenar('precio')">↕</button></th>
+          <th>Stock <button type="button" class="orden" (click)="ordenar('stock')">↕</button></th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of productos(); track p.id) {
+          <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.nombre }}</td>
+            <td><span class="chip">{{ p.categoriaNombre }}</span></td>
+            <td>{{ p.precio | currency:'PEN':'S/' }}</td>
+            <td>{{ p.stock }}</td>
+            <td><span class="badge" [class.inactivo]="!p.estado">{{ p.estado ? 'Activo' : 'Inactivo' }}</span></td>
+            <td class="acciones">
+              <a [routerLink]="[p.id, 'editar']" class="btn">Editar</a>
+              <button type="button" class="btn btn-peligro" (click)="darDeBaja(p)" [disabled]="!p.estado">Dar de baja</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="7" class="vacio">No hay productos registrados.</td></tr>
+        }
+      </tbody>
+    </table>
+
+    @if (resultado(); as r) {
+      <footer class="paginador">
+        <button type="button" class="btn" (click)="irA(r.pagina - 1)" [disabled]="r.pagina === 0">Anterior</button>
+        <span>Página {{ r.pagina + 1 }} de {{ r.totalPaginas }}</span>
+        <button type="button" class="btn" [disabled]="r.ultima || r.pagina >= r.totalPaginas - 1" (click)="irA(r.pagina + 1)">
+          Siguiente
+        </button>
+      </footer>
+    }
+  }
+</section>

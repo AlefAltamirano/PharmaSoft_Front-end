@@ -1,0 +1,67 @@
+<section class="page">
+  <header class="page-header no-imprimir">
+    <h2>Consulta de ventas</h2>
+    <div class="acciones">
+      <a routerLink="nueva" class="btn btn-primary">+ Nueva venta</a>
+      <button type="button" class="btn no-imprimir" (click)="imprimirConsulta()">Imprimir consulta</button>
+    </div>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="buscar()" class="card filtros no-imprimir">
+    <label>Cliente
+      <select formControlName="clienteId">
+        <option [ngValue]="0">Todos</option>
+        @for (cliente of clientes(); track cliente.id) {
+          <option [ngValue]="cliente.id">{{ cliente.nombres }} {{ cliente.apellidos }} · {{ cliente.dni }}</option>
+        }
+      </select>
+    </label>
+    <label>Estado
+      <select formControlName="estado">
+        <option value="">Todos</option><option value="REGISTRADA">Registrada</option><option value="ANULADA">Anulada</option>
+      </select>
+    </label>
+    <label>Desde <input type="date" formControlName="desde" /></label>
+    <label>Hasta <input type="date" formControlName="hasta" /></label>
+    <button type="submit" class="btn btn-primary no-imprimir">Buscar</button>
+  </form>
+
+  @if (error()) { <div class="alerta no-imprimir">{{ error() }}</div> }
+  <div class="resumen-impresion solo-impresion">
+    <h3>Listado de ventas</h3>
+    <p>{{ resumenFiltros() }}</p>
+  </div>
+
+  @if (cargando()) {
+    <p>Cargando ventas...</p>
+  } @else {
+    <table class="tabla">
+      <thead><tr><th>N.º</th><th>Fecha</th><th>Cliente</th><th>Estado</th><th>Total</th><th class="no-imprimir">Acción</th></tr></thead>
+      <tbody>
+        @for (venta of ventas(); track venta.id) {
+          <tr>
+            <td>N.º {{ venta.id.toString().padStart(6, '0') }}</td>
+            <td>{{ venta.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ venta.clienteNombre }}</td>
+            <td><span class="badge" [class.inactivo]="venta.estado === 'ANULADA'">{{ venta.estado }}</span></td>
+            <td>{{ venta.total | currency:'PEN':'S/' }}</td>
+            <td class="no-imprimir"><a [routerLink]="[venta.id]" class="btn">Ver</a></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="6" class="vacio">No hay ventas para los filtros seleccionados.</td></tr>
+        }
+      </tbody>
+      <tfoot><tr><th colspan="4">Total de ventas registradas en la página</th><th>{{ totalPagina() | currency:'PEN':'S/' }}</th><th></th></tr></tfoot>
+    </table>
+    <footer class="solo-impresion total-impresion">
+      Total de ventas registradas en la página: {{ totalPagina() | currency:'PEN':'S/' }}
+    </footer>
+    @if (resultado(); as r) {
+      <footer class="paginador no-imprimir">
+        <button type="button" class="btn no-imprimir" (click)="irA(r.pagina - 1)" [disabled]="r.pagina === 0">Anterior</button>
+        <span>Página {{ r.totalPaginas ? r.pagina + 1 : 0 }} de {{ r.totalPaginas }}</span>
+        <button type="button" class="btn no-imprimir" (click)="irA(r.pagina + 1)" [disabled]="r.ultima">Siguiente</button>
+      </footer>
+    }
+  }
+</section>

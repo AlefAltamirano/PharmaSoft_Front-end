@@ -1,0 +1,12 @@
+.comprobante { position: relative; max-width: 794px; min-height: 500px; margin: 0 auto; padding: 32px; background: #fff; box-shadow: 0 1px 4px rgb(0 0 0 / 0.1); }
+.comprobante-header { display: flex; justify-content: space-between; align-items: start; border-bottom: 2px solid #0f2e5c; margin-bottom: 20px; }
+.comprobante-header h2 { margin-bottom: 4px; }
+.comprobante-header p { margin-top: 0; color: #64748b; }
+.datos { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.datos p { margin: 5px 0; }
+.sello { position: absolute; top: 50%; left: 50%; z-index: 1; margin: 0; border: 5px solid rgb(180 35 24 / 0.72); color: rgb(180 35 24 / 0.72); padding: 12px 28px; font-weight: 800; font-size: clamp(32px, 7vw, 64px); letter-spacing: 4px; white-space: nowrap; transform: translate(-50%, -50%) rotate(-18deg); }
+.acciones { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+.exito { background: #ecfdf3; color: #067647; }
+@media print {
+  .sello { display: block; color: #8f1d16; border-color: #8f1d16; opacity: .72; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

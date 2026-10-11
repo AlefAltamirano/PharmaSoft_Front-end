@@ -14,3 +14,7 @@
 .area-header { grid-area: header; }
 .area-sidebar { grid-area: sidebar; overflow: hidden; }
 .area-main { grid-area: main; padding: 24px; background: #f4f6fa; }
+@media print {
+  .shell { display: block; min-height: auto; }
+  .area-main { padding: 0; }
+}
