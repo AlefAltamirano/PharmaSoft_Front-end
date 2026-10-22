@@ -1,13 +1,14 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
+import { SiPermiso } from '../../../../shared/directives/si-permiso';
 import { Cliente } from '../../models/cliente.model';
 import { ClienteService } from '../../services/cliente-service';
 import { mensajeError } from '../../../../core/utils/http-error';
 
 @Component({
   selector: 'app-cliente-list',
-  imports: [RouterLink],
+  imports: [RouterLink, SiPermiso],
   templateUrl: './cliente-list.html',
   styleUrl: './cliente-list.css'
 })

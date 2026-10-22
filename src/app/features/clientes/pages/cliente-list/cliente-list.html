@@ -1,7 +1,7 @@
 <section class="page">
   <header class="page-header">
     <h2>Clientes</h2>
-    <a routerLink="nuevo" class="btn btn-primary">+ Nuevo cliente</a>
+    <a *appSiPermiso="'CLIENTES_ESCRIBIR'" routerLink="nuevo" class="btn btn-primary">+ Nuevo cliente</a>
   </header>
 
   <input class="input buscador" placeholder="Buscar por nombre, apellido o documento..." [value]="filtro()" (input)="filtro.set($any($event.target).value)" />
@@ -38,8 +38,8 @@
               <span class="badge" [class.inactivo]="!c.estado">{{ c.estado ? 'Activo' : 'Inactivo' }}</span>
             </td>
             <td class="acciones">
-              <a [routerLink]="[c.id, 'editar']" class="btn">Editar</a>
-              <button type="button" class="btn btn-peligro" (click)="eliminar(c)">Eliminar</button>
+              <a *appSiPermiso="'CLIENTES_ESCRIBIR'" [routerLink]="[c.id, 'editar']" class="btn">Editar</a>
+              <button *appSiPermiso="'CLIENTES_ESCRIBIR'" type="button" class="btn btn-peligro" (click)="eliminar(c)">Eliminar</button>
             </td>
           </tr>
         } @empty {

@@ -1,0 +1,5 @@
+.login-page { min-height: 100vh; display: grid; place-items: center; background: #f1f5f9; }
+.login-card { width: min(420px, calc(100% - 32px)); display: grid; gap: 10px; }
+.login-card h1 { margin: 0 0 8px; color: #0f2e5c; }
+.aviso-expirada { padding: 12px; border-radius: 8px; background: #fef3c7; color: #92400e; }
+.login-card button { margin-top: 8px; }

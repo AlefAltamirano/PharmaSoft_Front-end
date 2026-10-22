@@ -1,10 +1,20 @@
 import { Routes } from '@angular/router';
 import { MainLayout } from './layout/main-layout/main-layout';
+import { authGuard, invitadoGuard } from './core/guards/auth-guard';
+import { permisoGuard } from './core/guards/permiso-guard';
 
 export const routes: Routes = [
   {
+    path: 'login',
+    title: 'Iniciar sesión',
+    canActivate: [invitadoGuard],
+    loadComponent: () => import('./features/auth/pages/login/login').then(m => m.Login)
+  },
+  {
     path: '',
     component: MainLayout,
+    canActivate: [authGuard],
+    canActivateChild: [authGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'inicio' },
       {
@@ -14,11 +24,19 @@ export const routes: Routes = [
       },
       {
         path: 'categorias',
+        canActivate: [permisoGuard],
+        data: { permiso: 'CATALOGO_LEER' },
         loadChildren: () => import('./features/categorias/categorias.routes').then(m => m.CATEGORIAS_ROUTES)
       },
       {
         path: 'clientes',
+        canActivate: [permisoGuard],
+        data: { permiso: 'CLIENTES_LEER' },
         loadChildren: () => import('./features/clientes/clientes.routes').then(m => m.CLIENTES_ROUTES)
+      },
+      {
+        path: 'acceso-denegado',
+        loadComponent: () => import('./shared/pages/acceso-denegado/acceso-denegado').then(m => m.AccesoDenegado)
       }
     ]
   },

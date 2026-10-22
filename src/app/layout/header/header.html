@@ -5,5 +5,10 @@
     <a routerLink="/inicio">Inicio</a>
     <a href="http://localhost:8080/swagger-ui.html" target="_blank" rel="noopener">API</a>
   </nav>
-  <span class="usuario">Invitado</span>
+  @if (auth.sesion(); as sesion) {
+    <span class="usuario">
+      {{ sesion.nombreCompleto }} · {{ sesion.roles.join(', ') }} · Expira {{ sesion.expiraEn | date: 'HH:mm' }}
+    </span>
+  }
+  <button type="button" class="btn-salir" (click)="cerrarSesion()">Cerrar sesión</button>
 </header>
