@@ -8,10 +8,11 @@ import { PaginaResponse } from '../../../../core/models/pagina-response';
 import { mensajeError } from '../../../../core/utils/http-error';
 import { Direccion, OrdenProducto, Producto } from '../../models/producto.model';
 import { ProductoService } from '../../services/producto-service';
+import { SiPermisoDirective } from '../../../../shared/directives/si-permiso.directive';
 
 @Component({
   selector: 'app-producto-list',
-  imports: [CurrencyPipe, RouterLink],
+  imports: [CurrencyPipe, RouterLink, SiPermisoDirective],
   templateUrl: './producto-list.html',
   styleUrl: './producto-list.css'
 })

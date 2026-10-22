@@ -25,17 +25,40 @@ export class VentaService {
   buscar(filtro: FiltroVentas, pagina: number, tamanio: number): Observable<PaginaResponse<Venta>> {
     let params = new HttpParams()
       .set('pagina', pagina)
-      .set('tamanio', tamanio);
-    if (filtro.clienteId) params = params.set('clienteId', filtro.clienteId);
+      .set('tamanio', tamanio)
+      .set('ordenarPor', 'fecha')
+      .set('direccion', 'desc');
+    if (filtro.clienteId !== null) params = params.set('clienteId', filtro.clienteId);
     if (filtro.estado) params = params.set('estado', filtro.estado);
-    if (filtro.desde) params = params.set('desde', filtro.desde);
-    if (filtro.hasta) params = params.set('hasta', filtro.hasta);
+    const desde = this.fechaIso(filtro.desde);
+    const hasta = this.fechaIso(filtro.hasta);
+    if (desde) params = params.set('desde', desde);
+    if (hasta) params = params.set('hasta', hasta);
 
-    return this.http.get<PaginaResponse<Venta> | Venta[]>(`${this.url}/buscar`, { params }).pipe(
-      map(respuesta => Array.isArray(respuesta)
-        ? this.crearPagina(respuesta, pagina, tamanio)
-        : respuesta)
+    return this.http.get<Venta[]>(this.url, { params }).pipe(
+      map(ventas => this.crearPagina(this.filtrar(ventas, filtro), pagina, tamanio))
     );
+  }
+
+  private filtrar(ventas: Venta[], filtro: FiltroVentas): Venta[] {
+    const desde = this.fechaIso(filtro.desde);
+    const hasta = this.fechaIso(filtro.hasta);
+    return ventas.filter(venta => {
+      const fecha = venta.fecha.slice(0, 10);
+      return (filtro.clienteId === null || venta.clienteId === filtro.clienteId) &&
+        (!filtro.estado || venta.estado === filtro.estado) &&
+        (!desde || fecha >= desde) &&
+        (!hasta || fecha <= hasta);
+    });
+  }
+
+  private fechaIso(valor: string | null | undefined): string | null {
+    if (!valor) return null;
+    const coincidencia = /^(\d{4})-(\d{2})-(\d{2})$/.exec(valor);
+    if (!coincidencia) return null;
+    const fecha = new Date(`${valor}T00:00:00Z`);
+    return Number.isNaN(fecha.getTime()) ||
+      fecha.toISOString().slice(0, 10) !== valor ? null : valor;
   }
 
   private crearPagina(ventas: Venta[], pagina: number, tamanio: number): PaginaResponse<Venta> {

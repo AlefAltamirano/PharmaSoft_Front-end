@@ -4,10 +4,11 @@ import { RouterLink } from '@angular/router';
 import { Cliente } from '../../models/cliente.model';
 import { ClienteService } from '../../services/cliente-service';
 import { mensajeError } from '../../../../core/utils/http-error';
+import { SiPermisoDirective } from '../../../../shared/directives/si-permiso.directive';
 
 @Component({
   selector: 'app-cliente-list',
-  imports: [RouterLink],
+  imports: [RouterLink, SiPermisoDirective],
   templateUrl: './cliente-list.html',
   styleUrl: './cliente-list.css'
 })

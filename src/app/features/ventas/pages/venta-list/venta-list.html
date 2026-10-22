@@ -2,7 +2,7 @@
   <header class="page-header no-imprimir">
     <h2>Consulta de ventas</h2>
     <div class="acciones">
-      <a routerLink="nueva" class="btn btn-primary">+ Nueva venta</a>
+      <a *appSiPermiso="'VENTAS_REGISTRAR'" routerLink="nueva" class="btn btn-primary">+ Nueva venta</a>
       <button type="button" class="btn no-imprimir" (click)="imprimirConsulta()">Imprimir consulta</button>
     </div>
   </header>
