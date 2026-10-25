@@ -1,0 +1,60 @@
+.filtros {
+  display: flex;
+  align-items: end;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.resumen-impresion {
+  margin: 12px 0;
+}
+
+.resumen-impresion h3 {
+  margin-bottom: 4px;
+  color: #0f2e5c;
+}
+
+.resumen-impresion p {
+  margin-top: 0;
+  color: #64748b;
+}
+
+.solo-impresion {
+  display: none;
+}
+
+.filtros label {
+  min-width: 180px;
+}
+
+.filtros input {
+  display: block;
+  margin-top: 6px;
+}
+
+.tabla tfoot th {
+  background: #e8eef7;
+  color: #0f2e5c;
+}
+
+.vacio {
+  text-align: center;
+  color: #64748b;
+}
+
+@media (max-width: 640px) {
+  .filtros {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media print {
+  .solo-impresion {
+    display: block;
+  }
+
+  .resumen-impresion p {
+    color: #1f2937;
+  }
+}

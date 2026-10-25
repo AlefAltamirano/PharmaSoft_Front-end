@@ -45,6 +45,12 @@ export const routes: Routes = [
         canActivate: [permisoGuard],
         data: { permiso: 'VENTAS_LEER' },
         loadChildren: () => import('./features/ventas/ventas.routes').then(m => m.VENTAS_ROUTES)
+      },
+      {
+        path: 'reportes',
+        canActivate: [permisoGuard],
+        data: { permiso: 'REPORTES_VER' },
+        loadChildren: () => import('./features/reportes/reportes.routes').then(m => m.REPORTES_ROUTES)
       }
     ]
   },
