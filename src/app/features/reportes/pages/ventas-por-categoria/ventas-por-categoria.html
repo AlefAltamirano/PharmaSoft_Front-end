@@ -1,0 +1,48 @@
+<section class="page">
+  <header class="page-header no-imprimir">
+    <h2>Reporte de ventas por categoría</h2>
+    <button type="button" class="btn" (click)="imprimirConsulta()">Imprimir reporte</button>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="buscar()" class="card filtros no-imprimir">
+    <label>Desde <input type="date" formControlName="desde" /></label>
+    <label>Hasta <input type="date" formControlName="hasta" /></label>
+    <button type="submit" class="btn btn-primary">Consultar</button>
+  </form>
+
+  @if (error()) { <div class="alerta no-imprimir">{{ error() }}</div> }
+
+  <div class="resumen-impresion solo-impresion">
+    <h3>Reporte de ventas por categoría</h3>
+    <p>{{ resumenFiltros() }}</p>
+  </div>
+
+  @if (cargando()) {
+    <p>Cargando reporte...</p>
+  } @else {
+    <table class="tabla">
+      <thead>
+        <tr><th>Categoría</th><th>Cantidad vendida</th><th>Monto total</th></tr>
+      </thead>
+      <tbody>
+        @for (item of reporte(); track item.categoriaId) {
+          <tr>
+            <td>{{ item.categoriaNombre }}</td>
+            <td>{{ item.cantidadVendida }}</td>
+            <td>{{ item.montoTotal | currency:'PEN':'S/' }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="3" class="vacio">No hay ventas para el período seleccionado.</td></tr>
+        }
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Total</th>
+          <th>{{ totalCantidad() }}</th>
+          <th>{{ totalMonto() | currency:'PEN':'S/' }}</th>
+        </tr>
+      </tfoot>
+    </table>
+  }
+</section>
+

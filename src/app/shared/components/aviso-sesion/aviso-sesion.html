@@ -1,0 +1,7 @@
+@if (auth.porVencer() && !oculto()) {
+  <aside class="aviso-sesion" role="alert">
+    <span>Tu sesión expirará en <strong>{{ formatear(auth.segundosRestantes()) }}</strong>.</span>
+    <button type="button" class="btn btn-primary" (click)="cerrarSesion()">Cerrar sesión ahora</button>
+    <button type="button" class="btn-cerrar" aria-label="Ocultar aviso" (click)="ocultar()">X</button>
+  </aside>
+}

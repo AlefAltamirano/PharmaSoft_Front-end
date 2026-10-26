@@ -1,0 +1,12 @@
+.formulario { display: grid; gap: 14px; max-width: 1000px; }
+label { display: grid; gap: 6px; font-weight: 600; }
+.sugerencias { display: grid; gap: 4px; margin-top: -10px; }
+.sugerencias button { border: 1px solid #dbe3ee; background: #f8fafc; padding: 8px; text-align: left; cursor: pointer; }
+.sugerencias button:hover { background: #e8f0fb; }
+.detalles { margin-top: 8px; overflow-x: auto; }
+.detalles h3 { color: #0f2e5c; }
+.cantidad { max-width: 90px; }
+.error { color: #b42318; font-size: 12px; }
+.resumen-total { text-align: right; font-size: 18px; margin: 8px 0; }
+.confirmacion { max-width: 650px; }
+.acciones { display: flex; gap: 8px; align-items: center; }

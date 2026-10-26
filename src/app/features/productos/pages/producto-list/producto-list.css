@@ -1,0 +1,8 @@
+.filtros { display: flex; gap: 16px; margin-bottom: 16px; }
+.filtros label { display: flex; flex-direction: column; gap: 4px; font-weight: 600; }
+.filtros .input { min-width: 190px; }
+.acciones { display: flex; gap: 8px; }
+.orden { border: 0; background: transparent; color: #fff; cursor: pointer; }
+.chip { padding: 3px 9px; border-radius: 999px; background: #e0e7ff; color: #3730a3; font-size: 13px; }
+.vacio { text-align: center; color: #6b7280; padding: 24px; }
+.paginador { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 16px; }

@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { MENU } from '../../core/config/menu';
 import { AuthService } from '../../core/auth/auth-service';
+import { MENU } from '../../core/config/menu';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,7 +11,7 @@ import { AuthService } from '../../core/auth/auth-service';
 })
 export class Sidebar {
   private readonly auth = inject(AuthService);
-  protected readonly menu = computed(() => MENU.filter(item =>
-    !item.permiso || this.auth.tienePermiso(item.permiso)
-  ));
+  protected readonly menu = computed(() =>
+    MENU.filter(item => !item.permiso || this.auth.tienePermiso(item.permiso))
+  );
 }

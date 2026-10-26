@@ -1,0 +1,16 @@
+.filtros { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; margin-bottom: 16px; }
+.filtros label { display: grid; gap: 5px; font-size: 14px; }
+select { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; font: inherit; }
+.acciones { display: flex; gap: 8px; }
+.paginador { display: flex; gap: 12px; align-items: center; justify-content: center; margin-top: 16px; }
+.resumen-impresion { margin: 12px 0; }
+.resumen-impresion h3 { margin-bottom: 4px; color: #0f2e5c; }
+.resumen-impresion p { margin-top: 0; color: #64748b; }
+.solo-impresion { display: none; }
+.total-impresion { margin-top: 12px; font-weight: 700; text-align: right; }
+tfoot th { text-align: right; padding: 12px; }
+@media (max-width: 850px) { .filtros { grid-template-columns: 1fr 1fr; } }
+@media print {
+  .solo-impresion { display: block; }
+  .resumen-impresion p { color: #1f2937; }
+}

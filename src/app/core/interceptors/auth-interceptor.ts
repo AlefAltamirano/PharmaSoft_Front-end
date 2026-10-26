@@ -1,12 +1,13 @@
-import { inject } from '@angular/core';
 import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../auth/auth-service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const apiUrl = environment.apiUrl.replace(/\/+$/, '');
   const auth = inject(AuthService);
   const token = auth.token();
-  if (!token || !req.url.startsWith(environment.apiUrl)) {
+  if (!token || (req.url !== apiUrl && !req.url.startsWith(`${apiUrl}/`))) {
     return next(req);
   }
   return next(req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }));

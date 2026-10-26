@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, tap, map } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { LoginRequest, LoginResponse, Permiso, Sesion } from './auth.model';
+import { LoginRequest, LoginResponse, Permiso, Sesion, UsuarioResponseDTO } from './auth.model';
 
 const CLAVE_SESION = 'pharmasoft.sesion';
 
@@ -11,14 +11,21 @@ const CLAVE_SESION = 'pharmasoft.sesion';
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
-  private temporizador: ReturnType<typeof setTimeout> | null = null;
+  private temporizador: ReturnType<typeof setInterval> | null = null;
 
-  private readonly sesionActual = signal<Sesion | null>(this.leerSesionGuardada());
+  readonly sesionActual = signal<Sesion | null>(this.leerSesionGuardada());
   readonly sesion = this.sesionActual.asReadonly();
-  readonly autenticado = computed(() => this.sesionActual() !== null);
+  readonly segundosRestantes = signal(0);
+  readonly autenticado = computed(() => {
+    const sesion = this.sesionActual();
+    return sesion !== null && sesion.expiraEn > Date.now();
+  });
+  readonly porVencer = computed(() =>
+    this.autenticado() && this.segundosRestantes() > 0 && this.segundosRestantes() <= 120
+  );
 
   constructor() {
-    this.programarExpiracion(this.sesionActual());
+    this.iniciarTemporizador(this.sesionActual());
   }
 
   login(credenciales: LoginRequest): Observable<Sesion> {
@@ -32,26 +39,36 @@ export class AuthService {
         permisos: respuesta.permisos
       })),
       tap(sesion => {
-        sessionStorage.setItem(CLAVE_SESION, JSON.stringify(sesion));
+        this.guardarSesion(sesion);
         this.sesionActual.set(sesion);
-        this.programarExpiracion(sesion);
+        this.iniciarTemporizador(sesion);
       })
     );
   }
 
-  cerrarSesion(motivo?: 'expirada', volverA?: string): void {
-    this.limpiarTemporizador();
-    sessionStorage.removeItem(CLAVE_SESION);
-    this.sesionActual.set(null);
+  obtenerPerfil(): Observable<UsuarioResponseDTO> {
+    return this.http.get<UsuarioResponseDTO>(`${environment.apiUrl}/auth/me`);
+  }
 
-    const queryParams: Record<string, string> = {};
-    if (motivo === 'expirada') {
-      queryParams['expirada'] = '1';
+  cerrarSesion(motivo?: 'expirada', volverA?: string): void {
+    this.detenerTemporizador();
+    this.sesionActual.set(null);
+    this.segundosRestantes.set(0);
+    try {
+      sessionStorage.removeItem(CLAVE_SESION);
+    } catch {
+      // sessionStorage may be unavailable in non-browser environments.
     }
-    if (volverA && volverA !== '/login') {
-      queryParams['returnUrl'] = volverA;
-    }
-    void this.router.navigate(['/login'], { queryParams });
+
+    const destino = volverA && volverA.startsWith('/') && !volverA.startsWith('//')
+      ? volverA
+      : undefined;
+    void this.router.navigate(['/login'], {
+      queryParams: {
+        ...(motivo === 'expirada' ? { expirada: '1' } : {}),
+        ...(destino && destino !== '/login' ? { returnUrl: destino } : {})
+      }
+    });
   }
 
   token(): string | null {
@@ -66,19 +83,21 @@ export class AuthService {
   }
 
   tienePermiso(permiso: Permiso): boolean {
-    return this.token() !== null && this.sesionActual()?.permisos.includes(permiso) === true;
+    const permisos = this.sesionActual()?.permisos ?? [];
+    return permisos.some(actual => actual === permiso);
   }
 
-  leerSesionGuardada(): Sesion | null {
+  private leerSesionGuardada(): Sesion | null {
     try {
-      const guardada = sessionStorage.getItem(CLAVE_SESION);
-      if (!guardada) {
+      const valor = sessionStorage.getItem(CLAVE_SESION);
+      if (!valor) {
         return null;
       }
-      const sesion = JSON.parse(guardada) as Sesion;
+      const sesion = JSON.parse(valor) as Sesion;
       if (
         typeof sesion.token !== 'string' ||
         typeof sesion.expiraEn !== 'number' ||
+        typeof sesion.username !== 'string' ||
         !Array.isArray(sesion.roles) ||
         !Array.isArray(sesion.permisos) ||
         sesion.expiraEn <= Date.now()
@@ -88,23 +107,45 @@ export class AuthService {
       }
       return sesion;
     } catch {
-      sessionStorage.removeItem(CLAVE_SESION);
+      try {
+        sessionStorage.removeItem(CLAVE_SESION);
+      } catch {
+        // Ignore storage cleanup failures.
+      }
       return null;
     }
   }
 
-  private programarExpiracion(sesion: Sesion | null): void {
-    this.limpiarTemporizador();
-    if (!sesion) {
-      return;
+  private guardarSesion(sesion: Sesion): void {
+    try {
+      sessionStorage.setItem(CLAVE_SESION, JSON.stringify(sesion));
+    } catch {
+      // The in-memory signal remains the source of truth for the current tab.
     }
-    const demora = Math.max(0, sesion.expiraEn - Date.now());
-    this.temporizador = setTimeout(() => this.cerrarSesion('expirada', this.router.url), demora);
   }
 
-  private limpiarTemporizador(): void {
+  private iniciarTemporizador(sesion: Sesion | null): void {
+    this.detenerTemporizador();
+    if (!sesion) {
+      this.segundosRestantes.set(0);
+      return;
+    }
+    this.actualizarSegundos(sesion);
+    this.temporizador = setInterval(() => this.actualizarSegundos(sesion), 1000);
+  }
+
+  private actualizarSegundos(sesion: Sesion): void {
+    const segundos = Math.max(0, Math.ceil((sesion.expiraEn - Date.now()) / 1000));
+    this.segundosRestantes.set(segundos);
+    if (segundos === 0) {
+      this.detenerTemporizador();
+      this.cerrarSesion('expirada', this.router.url);
+    }
+  }
+
+  private detenerTemporizador(): void {
     if (this.temporizador !== null) {
-      clearTimeout(this.temporizador);
+      clearInterval(this.temporizador);
       this.temporizador = null;
     }
   }

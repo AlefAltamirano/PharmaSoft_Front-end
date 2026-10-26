@@ -1,0 +1,39 @@
+<section class="page">
+  <h2>Mi cuenta</h2>
+  @if (cargando()) {
+    <p>Cargando perfil...</p>
+  } @else if (error(); as mensaje) {
+    <div class="alerta">{{ mensaje }}</div>
+  } @else if (perfil(); as usuario) {
+    @if (permisosDiferentes()) {
+      <div class="alerta alerta-permisos" role="alert">
+        Sus permisos cambiaron. Cierre sesión y vuelva a ingresar para actualizarlos
+      </div>
+    }
+    <article class="card perfil">
+      <dl>
+        <dt>Usuario</dt><dd>{{ usuario.username }}</dd>
+        <dt>Nombre completo</dt><dd>{{ usuario.nombreCompleto }}</dd>
+      </dl>
+      <h3>Roles</h3>
+      <div class="badges">
+        @for (rol of usuario.roles; track rol) {
+          <span class="badge">{{ rol }}</span>
+        }
+      </div>
+      <h3>Permisos</h3>
+      @for (modulo of modulos; track modulo[0]) {
+        <section>
+          <h4>{{ modulo[0] }}</h4>
+          <div class="badges">
+            @for (permiso of modulo[1]; track permiso) {
+              @if (tienePermiso(usuario.permisos, permiso)) {
+                <span class="badge">{{ permiso }}</span>
+              }
+            }
+          </div>
+        </section>
+      }
+    </article>
+  }
+</section>

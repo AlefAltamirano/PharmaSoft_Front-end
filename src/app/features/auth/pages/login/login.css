@@ -1,5 +1,13 @@
-.login-page { min-height: 100vh; display: grid; place-items: center; background: #f1f5f9; }
-.login-card { width: min(420px, calc(100% - 32px)); display: grid; gap: 10px; }
-.login-card h1 { margin: 0 0 8px; color: #0f2e5c; }
-.aviso-expirada { padding: 12px; border-radius: 8px; background: #fef3c7; color: #92400e; }
-.login-card button { margin-top: 8px; }
+:host { display: block; }
+.login-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: linear-gradient(135deg, #0f2e5c 0%, #1f5aa6 100%); }
+.card.login { width: min(420px, 100%); display: grid; gap: 10px; padding: 36px; border-radius: 16px; background: #fff; box-shadow: 0 18px 45px rgb(0 0 0 / 0.25); }
+.login-brand { display: flex; align-items: center; gap: 10px; color: #0f2e5c; font-size: 22px; font-weight: 800; }
+.login-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: #f2a900; color: #fff; }
+.login h1 { margin: 16px 0 0; color: #0f2e5c; font-size: 28px; }
+.login-subtitle { margin: 0 0 10px; color: #64748b; }
+.login .input { width: 100%; padding: 11px 12px; }
+.btn-login { width: 100%; margin-top: 12px; padding: 11px 14px; }
+.alerta { padding: 11px 12px; border-radius: 8px; font-size: 14px; }
+.alerta-expirada { background: #fef3c7; color: #92400e; }
+.alerta-error, .campo-error { color: #b42318; }
+.alerta-error { background: #fef3f2; }

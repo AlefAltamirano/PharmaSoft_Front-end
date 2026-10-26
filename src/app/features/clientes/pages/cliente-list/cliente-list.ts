@@ -1,58 +1,38 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { SiPermiso } from '../../../../shared/directives/si-permiso';
+import { SiPermisoDirective } from '../../../../shared/directives/si-permiso.directive';
+import { mensajeError } from '../../../../core/utils/http-error';
 import { Cliente } from '../../models/cliente.model';
 import { ClienteService } from '../../services/cliente-service';
-import { mensajeError } from '../../../../core/utils/http-error';
 
 @Component({
   selector: 'app-cliente-list',
-  imports: [RouterLink, SiPermiso],
+  imports: [RouterLink, SiPermisoDirective],
   templateUrl: './cliente-list.html',
   styleUrl: './cliente-list.css'
 })
 export class ClienteList implements OnInit {
   private readonly clienteService = inject(ClienteService);
-
   protected readonly clientes = signal<Cliente[]>([]);
   protected readonly cargando = signal(false);
   protected readonly error = signal<string | null>(null);
   protected readonly filtro = signal('');
-
   protected readonly filtrados = computed(() => {
     const texto = this.filtro().trim().toLowerCase();
-    return this.clientes().filter(c => 
-      c.nombres.toLowerCase().includes(texto) ||
-      c.apellidos.toLowerCase().includes(texto) ||
-      c.dni.includes(texto) ||
-      c.email.toLowerCase().includes(texto)
-    );
+    return this.clientes().filter(c => c.nombres.toLowerCase().includes(texto) || c.apellidos.toLowerCase().includes(texto) || c.dni.includes(texto) || c.email.toLowerCase().includes(texto));
   });
-
-  ngOnInit(): void {
-    this.cargar();
-  }
-
+  ngOnInit(): void { this.cargar(); }
   cargar(): void {
     this.cargando.set(true);
     this.error.set(null);
     this.clienteService.listar().subscribe({
-      next: datos => {
-        this.clientes.set(datos);
-        this.cargando.set(false);
-      },
-      error: (err: HttpErrorResponse) => {
-        this.error.set(mensajeError(err));
-        this.cargando.set(false);
-      }
+      next: datos => { this.clientes.set(datos); this.cargando.set(false); },
+      error: (err: HttpErrorResponse) => { this.error.set(mensajeError(err)); this.cargando.set(false); }
     });
   }
-
   eliminar(cliente: Cliente): void {
-    if (!confirm(`¿Eliminar al cliente "${cliente.nombres} ${cliente.apellidos}"?`)) {
-      return;
-    }
+    if (!confirm(`¿Eliminar al cliente "${cliente.nombres} ${cliente.apellidos}"?`)) return;
     this.clienteService.eliminar(cliente.id).subscribe({
       next: () => this.clientes.update(lista => lista.filter(c => c.id !== cliente.id)),
       error: (err: HttpErrorResponse) => this.error.set(mensajeError(err))

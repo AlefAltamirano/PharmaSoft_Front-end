@@ -1,6 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, input, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/auth/auth-service';
 
@@ -36,22 +36,14 @@ export class Login {
       error: (error: HttpErrorResponse) => {
         this.enviando.set(false);
         this.error.set(error.status === 401
-          ? this.mensajeDeError(error.error, 'Usuario o contraseña incorrectos.')
+          ? 'Usuario o contraseña incorrectos.'
           : 'No fue posible iniciar sesión. Inténtalo nuevamente.');
       }
     });
   }
 
-  protected destinoSeguro(): string {
+  private destinoSeguro(): string {
     const destino = this.returnUrl();
     return destino && destino.startsWith('/') && !destino.startsWith('//') ? destino : '/inicio';
-  }
-
-  private mensajeDeError(error: unknown, predeterminado: string): string {
-    if (typeof error === 'object' && error !== null && 'message' in error) {
-      const mensaje = (error as { message?: unknown }).message;
-      return typeof mensaje === 'string' && mensaje.length > 0 ? mensaje : predeterminado;
-    }
-    return predeterminado;
   }
 }
