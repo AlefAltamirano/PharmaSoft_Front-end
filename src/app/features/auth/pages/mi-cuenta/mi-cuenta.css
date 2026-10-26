@@ -1,0 +1,83 @@
+.page-header {
+  margin-bottom: 16px;
+}
+
+.card {
+  margin-bottom: 16px;
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #0f2e5c;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) 1fr;
+  gap: 10px 16px;
+  margin: 0;
+}
+
+dt {
+  color: #64748b;
+  font-weight: 600;
+}
+
+dd {
+  margin: 0;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.permisos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.permisos h4 {
+  margin: 0 0 8px;
+}
+
+ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  color: #b42318;
+}
+
+li.concedido {
+  color: #166534;
+}
+
+li span {
+  display: inline-block;
+  width: 20px;
+  font-weight: 700;
+}
+
+.alerta-permisos {
+  border: 1px solid #f59e0b;
+  background: #fffbeb;
+  color: #92400e;
+  font-weight: 600;
+}
+

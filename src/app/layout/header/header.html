@@ -5,5 +5,7 @@
     <a routerLink="/inicio">Inicio</a>
     <a href="http://localhost:8080/swagger-ui.html" target="_blank" rel="noopener">API</a>
   </nav>
-  <span class="usuario">Invitado</span>
+  <a routerLink="/mi-cuenta" class="usuario">
+    {{ authService.sesion()?.nombreCompleto || 'Mi cuenta' }}
+  </a>
 </header>

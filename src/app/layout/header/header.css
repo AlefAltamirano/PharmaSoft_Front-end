@@ -5,4 +5,5 @@
 .menubar { display: flex; gap: 16px; margin-left: 24px; }
 .menubar a { color: #dbe4f3; text-decoration: none; }
 .menubar a:hover { color: #fff; }
-.usuario { margin-left: auto; font-size: 14px; opacity: 0.85; }
+.usuario { margin-left: auto; color: #dbe4f3; font-size: 14px; opacity: 0.85; text-decoration: none; }
+.usuario:hover { color: #fff; }

@@ -1,0 +1,56 @@
+<section class="page">
+  <header class="page-header">
+    <h2>Mi cuenta</h2>
+  </header>
+
+  @if (cargando()) {
+    <p>Cargando perfil...</p>
+  } @else if (error()) {
+    <div class="alerta">{{ error() }}</div>
+  } @else if (perfil(); as datos) {
+    @if (!permisosActualizados()) {
+      <div class="alerta alerta-permisos" role="alert">
+        Sus permisos cambiaron. Cierre sesión y vuelva a ingresar para actualizarlos
+      </div>
+    }
+
+    <article class="card identidad">
+      <h3>Datos personales</h3>
+      <dl>
+        <dt>Nombre completo</dt><dd>{{ datos.nombreCompleto }}</dd>
+        <dt>Nombre de usuario</dt><dd>{{ datos.username }}</dd>
+      </dl>
+    </article>
+
+    <article class="card">
+      <h3>Roles asignados</h3>
+      <div class="badges">
+        @for (rol of datos.roles; track rol) {
+          <span class="badge">{{ rol }}</span>
+        } @empty {
+          <span>No tiene roles asignados.</span>
+        }
+      </div>
+    </article>
+
+    <article class="card">
+      <h3>Permisos por módulo</h3>
+      <div class="permisos">
+        @for (modulo of modulos(); track modulo.nombre) {
+          <section>
+            <h4>{{ modulo.nombre }}</h4>
+            <ul>
+              @for (permiso of modulo.permisos; track permiso) {
+                <li [class.concedido]="tienePermiso(permiso)">
+                  <span aria-hidden="true">{{ tienePermiso(permiso) ? '✓' : '✕' }}</span>
+                  {{ permiso }}
+                </li>
+              }
+            </ul>
+          </section>
+        }
+      </div>
+    </article>
+  }
+</section>
+
