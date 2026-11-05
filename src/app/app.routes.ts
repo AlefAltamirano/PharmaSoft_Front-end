@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, invitadoGuard } from './core/guards/auth-guard';
 import { permisoGuard } from './core/guards/permiso-guard';
-import { MainLayout } from './layout/main-layout/main-layout';
 
 export const routes: Routes = [
   {
@@ -12,7 +11,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: MainLayout,
+    loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayout),
     canActivate: [authGuard],
     canActivateChild: [authGuard],
     children: [
