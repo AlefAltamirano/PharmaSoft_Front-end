@@ -36,7 +36,9 @@ export class VentaService {
     if (hasta) params = params.set('hasta', hasta);
 
     return this.http.get<Venta[]>(this.url, { params }).pipe(
-      map(ventas => this.crearPagina(this.filtrar(ventas, filtro), pagina, tamanio))
+      map(ventas => this.crearPagina(
+        this.filtrar(ventas, filtro).sort((a, b) => b.fecha.localeCompare(a.fecha) || b.id - a.id),
+        pagina, tamanio))
     );
   }
 

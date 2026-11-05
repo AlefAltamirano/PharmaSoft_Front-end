@@ -57,3 +57,20 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+# Base previa a la sesión 13
+
+La rama `codex/correcciones-base-s13-altamirano` parte de
+`feature/seguridad-frontend-altamirano` y conserva los cambios locales de perfil y
+autenticación que estaban pendientes.
+
+Se corrigieron la ordenación de productos antes de paginar, el orden de ventas
+por fecha descendente, el límite de 100 caracteres del nombre de producto y el
+permiso para anular ventas. El formulario de ventas actualiza el cliente de la
+confirmación, exige cantidades enteras y evita envíos repetidos mientras guarda.
+Mi cuenta informa el tiempo de espera agotado y finaliza el estado de carga.
+
+Verificación: `npm run build` y `npm test -- --watch=false`.
+
+La URL de producción, Redis, el reporte diferido y Nginx se dejan para la sesión
+13. Productos y ventas siguen utilizando paginación local compatible con el
+backend actual. No se fusionaron ramas históricas automáticamente.

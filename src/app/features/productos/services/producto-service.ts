@@ -33,7 +33,9 @@ export class ProductoService {
             ? respuesta
             : respuesta.filter(producto => (producto.categoriaId ?? producto.categoria?.id) === categoriaId),
           pagina,
-          tamanio
+          tamanio,
+          ordenarPor,
+          direccion
         )
         : { ...respuesta, contenido: respuesta.contenido.map(producto => this.normalizar(producto as ProductoApi)) })
     );
@@ -55,9 +57,18 @@ export class ProductoService {
     return this.http.delete<void>(`${this.url}/${id}`);
   }
 
-  private crearPagina(productos: ProductoApi[], pagina: number, tamanio: number): PaginaResponse<Producto> {
+  private crearPagina(productos: ProductoApi[], pagina: number, tamanio: number,
+    ordenarPor: OrdenProducto, direccion: Direccion): PaginaResponse<Producto> {
     const inicio = pagina * tamanio;
-    const contenido = productos
+    const ordenados = [...productos].sort((a, b) => {
+      const izquierda = a[ordenarPor];
+      const derecha = b[ordenarPor];
+      const comparacion = typeof izquierda === 'string' && typeof derecha === 'string'
+        ? izquierda.localeCompare(derecha, 'es', { sensitivity: 'base' })
+        : Number(izquierda) - Number(derecha);
+      return direccion === 'asc' ? comparacion : -comparacion;
+    });
+    const contenido = ordenados
       .slice(inicio, inicio + tamanio)
       .map(producto => this.normalizar(producto));
 

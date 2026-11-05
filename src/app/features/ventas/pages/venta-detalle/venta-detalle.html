@@ -31,7 +31,7 @@
     <div class="acciones no-imprimir">
       <a routerLink="/ventas" class="btn">Volver a ventas</a>
       @if (v.estado === 'REGISTRADA') {
-        <button type="button" class="btn btn-peligro no-imprimir"
+        <button *appSiPermiso="'VENTAS_REGISTRAR'" type="button" class="btn btn-peligro no-imprimir"
           (click)="anularVenta()" [disabled]="anulando()">
           {{ anulando() ? 'Anulando...' : 'Anular venta' }}
         </button>

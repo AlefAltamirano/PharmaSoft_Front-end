@@ -23,12 +23,14 @@ export interface LoginResponse {
   permisos: Permiso[];
 }
 
-export interface UsuarioResponseDTO {
+export interface UsuarioPerfil {
   username: string;
   nombreCompleto: string;
   roles: string[];
-  permisos: Permiso[];
+  permisos: string[];
 }
+
+export type UsuarioResponseDTO = UsuarioPerfil;
 
 export interface Sesion {
   token: string;

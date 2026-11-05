@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable, tap, timeout } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { LoginRequest, LoginResponse, Permiso, Sesion, UsuarioResponseDTO } from './auth.model';
+import { LoginRequest, LoginResponse, Permiso, Sesion, UsuarioPerfil } from './auth.model';
 
 const CLAVE_SESION = 'pharmasoft.sesion';
 
@@ -46,8 +46,16 @@ export class AuthService {
     );
   }
 
-  obtenerPerfil(): Observable<UsuarioResponseDTO> {
-    return this.http.get<UsuarioResponseDTO>(`${environment.apiUrl}/auth/me`);
+  obtenerPerfil(): Observable<UsuarioPerfil> {
+    return this.http.get<UsuarioPerfil>(`${environment.apiUrl}/auth/me`).pipe(
+      timeout({ first: 15000 }),
+      map(perfil => ({
+        username: perfil.username,
+        nombreCompleto: perfil.nombreCompleto,
+        roles: Array.isArray(perfil.roles) ? perfil.roles.map(String) : [],
+        permisos: Array.isArray(perfil.permisos) ? perfil.permisos.map(String) : []
+      }))
+    );
   }
 
   cerrarSesion(motivo?: 'expirada', volverA?: string): void {

@@ -1,9 +1,9 @@
 <section class="page">
   <h2>Mi cuenta</h2>
   @if (cargando()) {
-    <p>Cargando perfil...</p>
+    <p role="status" aria-live="polite">Cargando perfil...</p>
   } @else if (error(); as mensaje) {
-    <div class="alerta">{{ mensaje }}</div>
+    <div class="alerta" role="alert">{{ mensaje }}</div>
   } @else if (perfil(); as usuario) {
     @if (permisosDiferentes()) {
       <div class="alerta alerta-permisos" role="alert">
@@ -35,5 +35,9 @@
         </section>
       }
     </article>
+  } @else {
+    <div class="alerta" role="alert">
+      No se pudo cargar la información del perfil.
+    </div>
   }
 </section>
