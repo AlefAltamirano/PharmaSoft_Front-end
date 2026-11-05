@@ -71,6 +71,11 @@ Mi cuenta informa el tiempo de espera agotado y finaliza el estado de carga.
 
 Verificación: `npm run build` y `npm test -- --watch=false`.
 
-La URL de producción, Redis, el reporte diferido y Nginx se dejan para la sesión
-13. Productos y ventas siguen utilizando paginación local compatible con el
+La rama de la sesión 13 implementa API relativa, reporte diferido y Nginx; Redis se configura en el backend. Productos y ventas siguen utilizando paginación local compatible con el
 backend actual. No se fusionaron ramas históricas automáticamente.
+
+## Sesión 13 implementada
+
+Rama: feature/optimizacion-produccion-altamirano. PR: https://github.com/AlefAltamirano/PharmaSoft_Front-end/pull/1
+
+Compilar con npm run build y ejecutar docker compose -f deploy/docker-compose.yml up -d. Abrir http://localhost:8081 con el backend prod en 8080 y Redis en 6379. Reporte diferido solo para REPORTES_VER; JS/CSS con cache de un año y index.html revalidable. Verificado: 16 pruebas, build correcto y 14 comprobaciones locales coordinadas con backend.
