@@ -13,7 +13,10 @@ export function mensajeError(err: HttpErrorResponse): string {
     409: 'La operación no puede completarse porque existe un conflicto con los datos.'
   };
   const cuerpo = err.error as ErrorResponse | null;
-  return cuerpo?.message ?? mensajes[err.status] ?? `Error ${err.status}: ${err.statusText}`;
+  const mensaje = cuerpo?.message ?? mensajes[err.status] ?? `Error ${err.status}: ${err.statusText}`;
+  return typeof cuerpo?.requestId === 'string' && /^[a-zA-Z0-9-]{1,64}$/.test(cuerpo.requestId)
+    ? `${mensaje} Código de seguimiento: ${cuerpo.requestId}`
+    : mensaje;
 }
 
 export function erroresDeValidacion(err: HttpErrorResponse): Record<string, string> {

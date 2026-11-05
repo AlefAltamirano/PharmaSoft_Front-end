@@ -1,4 +1,5 @@
 export interface ErrorResponse {
+  requestId?: string | null;
   timestamp: string;
   status: number;
   error: string;
