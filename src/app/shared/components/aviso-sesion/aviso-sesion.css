@@ -1,0 +1,19 @@
+.aviso-sesion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  border: 1px solid #f2a900;
+  border-radius: 8px;
+  background: #fff8e1;
+  color: #7a4d00;
+}
+.aviso-sesion .btn-primary { margin-left: auto; }
+.btn-cerrar {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-weight: 700;
+}

@@ -3,6 +3,7 @@ import { Component, inject, input, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/auth/auth-service';
+import { mensajeError } from '../../../../core/utils/http-error';
 
 @Component({
   selector: 'app-login',
@@ -35,17 +36,13 @@ export class Login {
       next: () => void this.router.navigateByUrl(this.destinoSeguro()),
       error: (error: HttpErrorResponse) => {
         this.enviando.set(false);
-        this.error.set(error.status === 401
-          ? 'Usuario o contraseña incorrectos.'
-          : 'No fue posible iniciar sesión. Inténtalo nuevamente.');
+          this.error.set(mensajeError(error));
       }
     });
   }
 
   private destinoSeguro(): string {
     const destino = this.returnUrl();
-    return destino && destino.startsWith('/') && !destino.startsWith('//')
-      ? destino
-      : '/inicio';
+    return destino && destino.startsWith('/') && !destino.startsWith('//') ? destino : '/inicio';
   }
 }

@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { CategoriaList } from './pages/categoria-list/categoria-list';
-import { CategoriaForm } from './pages/categoria-form/categoria-form';
 import { permisoGuard } from '../../core/guards/permiso-guard';
+import { CategoriaForm } from './pages/categoria-form/categoria-form';
+import { CategoriaList } from './pages/categoria-list/categoria-list';
 
 export const CATEGORIAS_ROUTES: Routes = [
   { path: '', component: CategoriaList, title: 'Categorías', canActivate: [permisoGuard], data: { permiso: 'CATALOGO_LEER' } },

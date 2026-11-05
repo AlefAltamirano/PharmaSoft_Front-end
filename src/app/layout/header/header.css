@@ -6,3 +6,4 @@
 .menubar a { color: #dbe4f3; text-decoration: none; }
 .menubar a:hover { color: #fff; }
 .usuario { margin-left: auto; font-size: 14px; opacity: 0.85; }
+.btn-salir { border: 1px solid #dbe4f3; border-radius: 6px; background: transparent; color: #fff; padding: 6px 10px; cursor: pointer; }

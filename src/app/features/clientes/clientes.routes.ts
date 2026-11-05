@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { ClienteList } from './pages/cliente-list/cliente-list';
-import { ClienteForm } from './pages/cliente-form/cliente-form';
 import { permisoGuard } from '../../core/guards/permiso-guard';
+import { ClienteForm } from './pages/cliente-form/cliente-form';
+import { ClienteList } from './pages/cliente-list/cliente-list';
 
 export const CLIENTES_ROUTES: Routes = [
   { path: '', component: ClienteList, title: 'Clientes', canActivate: [permisoGuard], data: { permiso: 'CLIENTES_LEER' } },
