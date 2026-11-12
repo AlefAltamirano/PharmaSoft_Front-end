@@ -1,0 +1,206 @@
+[
+  {
+    "id": 1,
+    "title": "Build y chunks diferidos",
+    "ok": true,
+    "detail": "\r\n> pharma-frontend@0.0.0 build\r\n> ng build --stats-json --verbose\r\n\r\n> Building...\r\n√ Building...\r\nInitial chunk files | Names             |  Raw size | Estimated transfer size\r\nchunk-BF8c-Ki4.js   | -                 | 204.45 kB |                59.93 kB\r\nchunk-DgONN8W0.js   | -                 |  92.29 kB |                23.46 kB\r\nmain-PUR5GIBM.js    | main              |  11.79 kB |                 3.90 kB\r\nstyles-PHLWQL3M.css | styles            |   1.39 kB |               489 bytes\r\nchunk-kiu1T7UI.js   | -                 |  54 bytes |                54 bytes\r\n\r\n                    | Initial total     | 309.97 kB |                87.84 kB\r\n\r\nLazy chunk files    | Names             |  Raw size | Estimated transfer size\r\nchunk-5ZjzZBkC.js   | -                 |  50.36 kB |                10.28 kB\r\nchunk-D_6C99Lm.js   | ventas-routes     |  24.76 kB |                 7.07 kB\r\nchunk-Bmy_17Aa.js   | productos-routes  |  13.17 kB |                 3.94 kB\r\nchunk-BCKnZBUY.js   | clientes-routes   |   9.14 kB |                 3.01 kB\r\nchunk-COOubp3D.js   | categorias-routes |   7.41 kB |                 2.58 kB\r\nchunk-1ODSkWnQ.js   | reportes-routes   |   5.47 kB |                 2.13 kB\r\nchunk-BT9qudHf.js   | login             |   4.36 kB |                 1.70 kB\r\nchunk-BBoqwn86.js   | mi-cuenta         |   3.46 kB |                 1.44 kB\r\nchunk-Cmn2NdNk.js   | -                 |   2.26 kB |                 1.03 kB\r\nchunk-BIyZ80kv.js   | mas-vendidos      |   1.74 kB |               846 bytes\r\nchunk-B_dpnQNu.js   | inicio            |   1.23 kB |               681 bytes\r\nchunk-BhaVf0Ik.js   | -                 | 612 bytes |               612 bytes\r\nchunk-CHao57GP.js   | acceso-denegado   | 589 bytes |               589 bytes\r\nchunk-CovhTdjd.js   | -                 | 540 bytes |               540 bytes\r\nchunk-KnpYZ7nD.js   | -                 | 522 bytes |               522 bytes\r\nchunk-B6HLmA3Z.js   | -                 | 520 bytes |               520 bytes\r\nchunk-GuxMIxeU.js   | no-encontrado     | 511 bytes |               511 bytes\r\n\r\nApplication bundle generation complete. [6.110 seconds] - 2026-11-05T14:08:27.306Z\r\n\r\nOutput location: C:\\Users\\Asus\\IdeaProjects\\pharma-frontend\\dist\\pharma-frontend\r\n\r\n"
+  },
+  {
+    "id": 2,
+    "title": "Vendedor no consulta reporte",
+    "ok": true,
+    "detail": [
+      "/inicio",
+      "/chunk-BF8c-Ki4.js",
+      "/chunk-DgONN8W0.js",
+      "/chunk-kiu1T7UI.js",
+      "/main-PUR5GIBM.js",
+      "/styles-PHLWQL3M.css",
+      "/chunk-B_dpnQNu.js"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Administrador carga reporte diferido",
+    "ok": true,
+    "detail": "Capturas del bloque diferido y tabla real"
+  },
+  {
+    "id": 4,
+    "title": "Cache-Control JS",
+    "ok": true,
+    "detail": {
+      "cache-control": "public, max-age=31536000, immutable",
+      "connection": "keep-alive",
+      "content-encoding": "gzip",
+      "content-type": "application/javascript",
+      "date": "Thu, 05 Nov 2026 14:12:10 GMT",
+      "etag": "W/\"6aec8ddb-2e0a\"",
+      "last-modified": "Thu, 05 Nov 2026 14:08:27 GMT",
+      "server": "nginx/1.27.5",
+      "transfer-encoding": "chunked"
+    }
+  },
+  {
+    "id": 5,
+    "title": "Cache-Control index",
+    "ok": true,
+    "detail": {
+      "cache-control": "no-cache",
+      "connection": "keep-alive",
+      "content-encoding": "gzip",
+      "content-type": "text/html",
+      "date": "Thu, 05 Nov 2026 14:12:10 GMT",
+      "etag": "W/\"6aec8ddb-40c\"",
+      "last-modified": "Thu, 05 Nov 2026 14:08:27 GMT",
+      "server": "nginx/1.27.5",
+      "transfer-encoding": "chunked"
+    }
+  },
+  {
+    "id": 6,
+    "title": "F5 en productos y caché navegador",
+    "ok": true,
+    "detail": {
+      "primeraVisitaBytes": 12562,
+      "recargaBytes": 3044,
+      "recursosDesdeCache": 17
+    }
+  },
+  {
+    "id": 7,
+    "title": "Redis categorías y TTL",
+    "ok": true,
+    "detail": {
+      "duracionMs": [
+        31,
+        18
+      ],
+      "ttlSegundos": 600
+    }
+  },
+  {
+    "id": 8,
+    "title": "Crear categoría invalida caché",
+    "ok": true,
+    "detail": {
+      "statusCrear": 201,
+      "id": 1303
+    }
+  },
+  {
+    "id": 9,
+    "title": "Venta invalida stock cacheado",
+    "ok": true,
+    "detail": {
+      "stockAntes": 150,
+      "stockDespues": 149,
+      "ventaId": 39
+    }
+  },
+  {
+    "id": 10,
+    "title": "Redis caído: Oracle disponible y health DOWN",
+    "ok": true,
+    "detail": {
+      "categoriasStatus": 200,
+      "health": {
+        "groups": [
+          "liveness",
+          "readiness"
+        ],
+        "status": "DOWN"
+      }
+    }
+  },
+  {
+    "id": 11,
+    "title": "Identificador de petición",
+    "ok": true,
+    "detail": {
+      "requestId": "bb339b53",
+      "lineas": [
+        "2026-11-05 09:12:16,944 WARN  [bb339b53] p.e.u.P.config.CacheConfig - Cache categorias no disponible; se usa Oracle\r",
+        "2026-11-05 09:12:16,947 INFO  [bb339b53] p.e.u.P.s.impl.CategoriaServiceImpl - Inicio listar categorias\r",
+        "2026-11-05 09:12:16,961 INFO  [bb339b53] p.e.u.P.config.RequestIdFilter - GET /api/v1/categorias -> 200 duracionMs=525\r"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "title": "Health público sin detalles",
+    "ok": true,
+    "detail": {
+      "status": 200,
+      "headers": {
+        "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
+        "connection": "keep-alive",
+        "content-type": "application/vnd.spring-boot.actuator.v3+json",
+        "date": "Thu, 05 Nov 2026 14:12:17 GMT",
+        "expires": "0",
+        "keep-alive": "timeout=60",
+        "pragma": "no-cache",
+        "transfer-encoding": "chunked",
+        "vary": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "x-request-id": "5ef1be83",
+        "x-xss-protection": "0"
+      },
+      "data": {
+        "groups": [
+          "liveness",
+          "readiness"
+        ],
+        "status": "UP"
+      }
+    }
+  },
+  {
+    "id": 13,
+    "title": "Métricas rechazan vendedor",
+    "ok": true,
+    "detail": {
+      "status": 403,
+      "headers": {
+        "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
+        "connection": "keep-alive",
+        "content-length": "172",
+        "content-type": "application/json;charset=UTF-8",
+        "date": "Thu, 05 Nov 2026 14:12:17 GMT",
+        "expires": "0",
+        "keep-alive": "timeout=60",
+        "pragma": "no-cache",
+        "vary": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "x-request-id": "fe6a290c",
+        "x-xss-protection": "0"
+      },
+      "data": {
+        "timestamp": [
+          2026,
+          11,
+          5,
+          9,
+          12,
+          17,
+          123796400
+        ],
+        "status": 403,
+        "error": "Forbidden",
+        "message": "No tiene permisos para realizar esta operación",
+        "path": null,
+        "validationErrors": null
+      }
+    }
+  },
+  {
+    "id": 14,
+    "title": "Logs sin contraseñas o Bearer",
+    "ok": true,
+    "detail": {
+      "lineasRevisadas": 243
+    }
+  }
+]

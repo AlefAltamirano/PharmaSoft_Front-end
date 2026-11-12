@@ -13,6 +13,8 @@ export class ClienteService {
     return this.http.get<Cliente[]>(this.url);
   }
 
+  buscar(texto:string):Observable<Cliente[]> { return this.http.get<Cliente[]>(`${this.url}/buscar`,{params:{texto}}); }
+
   obtener(id: number): Observable<Cliente> {
     return this.http.get<Cliente>(`${this.url}/${id}`);
   }

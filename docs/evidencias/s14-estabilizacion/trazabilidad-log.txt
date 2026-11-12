@@ -1,0 +1,2 @@
+2026-11-12 10:16:42,567 INFO  [1a034758-6f2a-436c-aff3-88b64f939d95] p.e.u.P.s.impl.VentaServiceImpl - Venta registrada id=20067 items=1
+2026-11-12 10:16:42,592 INFO  [1a034758-6f2a-436c-aff3-88b64f939d95] p.e.u.P.config.RequestIdFilter - POST /api/v1/ventas -> 201 duracionMs=71

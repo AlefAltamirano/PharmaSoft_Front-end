@@ -35,44 +35,7 @@ export class VentaService {
     if (desde) params = params.set('desde', desde);
     if (hasta) params = params.set('hasta', hasta);
 
-    return this.http.get<Venta[]>(this.url, { params }).pipe(
-      map(ventas => this.crearPagina(
-        this.filtrar(ventas, filtro).sort((a, b) => b.fecha.localeCompare(a.fecha) || b.id - a.id),
-        pagina, tamanio))
-    );
+    return this.http.get<PaginaResponse<Venta>>(`${this.url}/buscar`, {params});
   }
-
-  private filtrar(ventas: Venta[], filtro: FiltroVentas): Venta[] {
-    const desde = this.fechaIso(filtro.desde);
-    const hasta = this.fechaIso(filtro.hasta);
-    return ventas.filter(venta => {
-      const fecha = venta.fecha.slice(0, 10);
-      return (filtro.clienteId === null || venta.clienteId === filtro.clienteId) &&
-        (!filtro.estado || venta.estado === filtro.estado) &&
-        (!desde || fecha >= desde) &&
-        (!hasta || fecha <= hasta);
-    });
-  }
-
-  private fechaIso(valor: string | null | undefined): string | null {
-    if (!valor) return null;
-    const coincidencia = /^(\d{4})-(\d{2})-(\d{2})$/.exec(valor);
-    if (!coincidencia) return null;
-    const fecha = new Date(`${valor}T00:00:00Z`);
-    return Number.isNaN(fecha.getTime()) ||
-      fecha.toISOString().slice(0, 10) !== valor ? null : valor;
-  }
-
-  private crearPagina(ventas: Venta[], pagina: number, tamanio: number): PaginaResponse<Venta> {
-    const inicio = pagina * tamanio;
-    const contenido = ventas.slice(inicio, inicio + tamanio);
-    return {
-      contenido,
-      pagina,
-      tamanio,
-      totalElementos: ventas.length,
-      totalPaginas: ventas.length ? Math.ceil(ventas.length / tamanio) : 0,
-      ultima: inicio + tamanio >= ventas.length
-    };
-  }
+  private fechaIso(valor:string|null|undefined):string|null {return valor||null;}
 }

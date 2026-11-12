@@ -1,0 +1,70 @@
+{
+  "fecha": "2026-11-12T15:18:16.850Z",
+  "entorno": "Oracle/Redis locales; datos sintéticos de desarrollo; sin concurrencia",
+  "medidas": [
+    {
+      "nombre": "Productos primera página",
+      "status": 200,
+      "ms": 23.27,
+      "bytes": 7975,
+      "filas": 20,
+      "totalElementos": 5044,
+      "totalPaginas": 253,
+      "requestId": "9b8d3ab3-51ed-4c8a-a324-f8ef10a72074"
+    },
+    {
+      "nombre": "Productos última página",
+      "status": 200,
+      "ms": 15.99,
+      "bytes": 1611,
+      "filas": 4,
+      "totalElementos": 5044,
+      "totalPaginas": 253,
+      "requestId": "60c1e8d8-05d7-4196-9854-7a106dd1ee94"
+    },
+    {
+      "nombre": "Productos primera página repetida",
+      "status": 200,
+      "ms": 7.12,
+      "bytes": 7975,
+      "filas": 20,
+      "totalElementos": 5044,
+      "totalPaginas": 253,
+      "requestId": "34d88c48-549d-480c-8535-24c8ae4282f2"
+    },
+    {
+      "nombre": "Ventas primera página",
+      "status": 200,
+      "ms": 59.1,
+      "bytes": 6055,
+      "filas": 20,
+      "totalElementos": 20025,
+      "totalPaginas": 1002,
+      "requestId": "901f09e1-e240-492f-9ceb-195f8286219c"
+    },
+    {
+      "nombre": "Ventas última página",
+      "status": 200,
+      "ms": 25.75,
+      "bytes": 959,
+      "filas": 5,
+      "totalElementos": 20025,
+      "totalPaginas": 1002,
+      "requestId": "070490bb-8232-467a-baf4-07975884298f"
+    },
+    {
+      "nombre": "Tamaño rechazado",
+      "status": 409,
+      "ms": 8.11,
+      "bytes": 233,
+      "requestId": "93357cf0-969b-4e70-ba43-adfcaf3f543d"
+    },
+    {
+      "nombre": "Orden rechazado",
+      "status": 409,
+      "ms": 9.09,
+      "bytes": 234,
+      "requestId": "354a0f8b-e875-4268-8b36-b93b6b505e3e"
+    }
+  ]
+}

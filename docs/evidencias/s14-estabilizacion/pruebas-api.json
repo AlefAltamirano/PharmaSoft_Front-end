@@ -1,0 +1,119 @@
+{
+  "fecha": "2026-11-12T15:18:17.345Z",
+  "modalidad": "HTTP automatizado con Node; colección Postman importable equivalente",
+  "results": [
+    {
+      "caso": "Login admin",
+      "status": 200,
+      "esperado": 200,
+      "requestId": "abeb6385-6fb6-4450-8252-4b69e282a9a1",
+      "correcto": true
+    },
+    {
+      "caso": "Login vendedor",
+      "status": 200,
+      "esperado": 200,
+      "requestId": "361b854f-bc1d-40ba-82ba-6b1b3fa2ac7c",
+      "correcto": true
+    },
+    {
+      "caso": "Producto activo de prueba",
+      "status": 200,
+      "esperado": 200,
+      "requestId": "bfa09271-5b17-4938-a1f4-c9125e8e128a",
+      "correcto": true
+    },
+    {
+      "caso": "Cliente activo",
+      "status": 200,
+      "esperado": 200,
+      "requestId": "84df6b76-0103-4840-b292-cd5ed672fea5",
+      "correcto": true
+    },
+    {
+      "caso": "Página 20 — 200",
+      "status": 200,
+      "esperado": 200,
+      "requestId": "be4249b1-610e-43d0-937b-e1118e7a5db4",
+      "correcto": true
+    },
+    {
+      "caso": "Auditoría admin — 200",
+      "status": 200,
+      "esperado": 200,
+      "requestId": "fe2cfabc-72fd-483c-a12d-a3286e4f33fc",
+      "correcto": true
+    },
+    {
+      "caso": "Venta válida — 201",
+      "status": 201,
+      "esperado": 201,
+      "requestId": "0fc324d8-2af7-46fd-aadd-07846e1e8e85",
+      "correcto": true
+    },
+    {
+      "caso": "Venta sin detalles — 400",
+      "status": 400,
+      "esperado": 400,
+      "requestId": "8c8cf6b0-6c96-406d-aa80-bf4b5c862109",
+      "correcto": true
+    },
+    {
+      "caso": "Sin autenticación — 401",
+      "status": 401,
+      "esperado": 401,
+      "requestId": "ddc8f096-f26a-4471-9220-390c8d9626dc",
+      "correcto": true
+    },
+    {
+      "caso": "Auditoría vendedor — 403",
+      "status": 403,
+      "esperado": 403,
+      "requestId": "87aa4bec-606a-488e-82a3-9dd1632d39db",
+      "correcto": true
+    },
+    {
+      "caso": "Producto inexistente — 404",
+      "status": 404,
+      "esperado": 404,
+      "requestId": "0f8bcabe-39c2-44d3-9a25-1f928a99aba6",
+      "correcto": true
+    },
+    {
+      "caso": "Stock insuficiente — 409",
+      "status": 409,
+      "esperado": 409,
+      "requestId": "ff4a6b71-968f-488c-af69-5ca665bb5fe9",
+      "correcto": true
+    },
+    {
+      "caso": "Tamaño inválido — 409",
+      "status": 409,
+      "esperado": 409,
+      "requestId": "64716857-064d-479c-8450-1305efcef815",
+      "correcto": true
+    },
+    {
+      "caso": "Orden inválido — 409",
+      "status": 409,
+      "esperado": 409,
+      "requestId": "ef094146-495d-4e26-aa05-46bf490cd2db",
+      "correcto": true
+    },
+    {
+      "caso": "Anulación de prueba — 200",
+      "status": 200,
+      "esperado": 200,
+      "requestId": "c9c31534-ec21-4bec-9a64-75961b5310da",
+      "correcto": true
+    },
+    {
+      "caso": "Stock restituido",
+      "status": 200,
+      "esperado": 200,
+      "requestId": "646c83c6-3931-4bf4-9f3e-505469795fb7",
+      "correcto": true
+    }
+  ],
+  "stockRestituido": true
+}

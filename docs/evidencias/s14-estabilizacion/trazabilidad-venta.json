@@ -1,0 +1,82 @@
+{
+  "ventaId": 20067,
+  "stockAntes": 100,
+  "stockDespues": 98,
+  "creadoPor": "VENDEDOR",
+  "evento": {
+    "accion": "VENTA_REGISTRADA",
+    "detalle": "Total=23.0; líneas=1",
+    "entidad": "Venta",
+    "entidadId": 20067,
+    "fecha": "2026-11-12T10:16:42.574963",
+    "id": 198,
+    "requestId": "1a034758-6f2a-436c-aff3-88b64f939d95",
+    "usuario": "VENDEDOR"
+  },
+  "reportes": {
+    "antes": [
+      {
+        "categoriaId": 6,
+        "categoriaNombre": "Dermatológicos",
+        "cantidadVendida": 26,
+        "montoTotal": 1690
+      },
+      {
+        "categoriaId": 2,
+        "categoriaNombre": "Antibióticos",
+        "cantidadVendida": 45,
+        "montoTotal": 1080
+      },
+      {
+        "categoriaId": 1,
+        "categoriaNombre": "Analgésicos",
+        "cantidadVendida": 10,
+        "montoTotal": 155
+      },
+      {
+        "categoriaId": 5,
+        "categoriaNombre": "Antihistamínicos",
+        "cantidadVendida": 8,
+        "montoTotal": 108.4
+      },
+      {
+        "categoriaId": 3,
+        "categoriaNombre": "Antiinflamatorios",
+        "cantidadVendida": 6,
+        "montoTotal": 53.4
+      }
+    ],
+    "despues": [
+      {
+        "categoriaId": 6,
+        "categoriaNombre": "Dermatológicos",
+        "cantidadVendida": 26,
+        "montoTotal": 1690
+      },
+      {
+        "categoriaId": 2,
+        "categoriaNombre": "Antibióticos",
+        "cantidadVendida": 45,
+        "montoTotal": 1080
+      },
+      {
+        "categoriaId": 1,
+        "categoriaNombre": "Analgésicos",
+        "cantidadVendida": 12,
+        "montoTotal": 178
+      },
+      {
+        "categoriaId": 5,
+        "categoriaNombre": "Antihistamínicos",
+        "cantidadVendida": 8,
+        "montoTotal": 108.4
+      },
+      {
+        "categoriaId": 3,
+        "categoriaNombre": "Antiinflamatorios",
+        "cantidadVendida": 6,
+        "montoTotal": 53.4
+      }
+    ]
+  }
+}

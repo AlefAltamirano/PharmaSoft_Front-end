@@ -10,12 +10,12 @@
     <form [formGroup]="form" (ngSubmit)="validarYConfirmar()" class="card formulario">
       <label>
         Buscar cliente
-        <input [formControl]="buscarCliente" placeholder="DNI, nombres o apellidos" autocomplete="off" />
+        <input data-testid="buscar-cliente" [formControl]="buscarCliente" placeholder="DNI, nombres o apellidos" autocomplete="off" />
       </label>
       @if (clientesCoincidentes().length) {
         <div class="sugerencias">
           @for (cliente of clientesCoincidentes(); track cliente.id) {
-            <button type="button" (click)="seleccionarCliente(cliente)">
+            <button type="button" data-testid="opcion-cliente" (click)="seleccionarCliente(cliente)">
               {{ cliente.nombres }} {{ cliente.apellidos }} · {{ cliente.dni }}
             </button>
           }
@@ -27,13 +27,13 @@
 
       <label>
         Buscar producto
-        <input [formControl]="buscarProducto" (keydown.enter)="agregarPrimerProducto($event)"
+        <input data-testid="buscar-producto" [formControl]="buscarProducto" (keydown.enter)="agregarPrimerProducto($event)"
           placeholder="Escriba el nombre y presione Enter" autocomplete="off" />
       </label>
       @if (productosCoincidentes().length) {
         <div class="sugerencias">
           @for (producto of productosCoincidentes(); track producto.id) {
-            <button type="button" (click)="agregarProducto(producto)">
+            <button type="button" data-testid="opcion-producto" [attr.data-stock]="producto.stock" (click)="agregarProducto(producto)">
               {{ producto.nombre }} · {{ producto.precio | currency:'PEN':'S/' }} · stock {{ producto.stock }}
             </button>
           }
@@ -50,7 +50,7 @@
                 <td>{{ linea.producto?.nombre ?? 'Producto no disponible' }}</td>
                 <td>{{ (linea.producto?.precio ?? 0) | currency:'PEN':'S/' }}</td>
                 <td>
-                  <input class="cantidad" type="number" min="1" formControlName="cantidad" />
+                  <input class="cantidad" type="number" min="1" data-testid="cantidad" formControlName="cantidad" />
                   @if (linea.producto && linea.cantidad > linea.producto.stock) {
                     <small class="error">Excede stock ({{ linea.producto.stock }}).</small>
                   }
@@ -65,7 +65,7 @@
         </table>
       </div>
 
-      <div class="resumen-total"><strong>Total estimado:</strong> {{ total() | currency:'PEN':'S/' }}</div>
+      <div data-testid="total-venta" class="resumen-total"><strong>Total estimado:</strong> {{ total() | currency:'PEN':'S/' }}</div>
       <button type="submit" class="btn btn-primary" [disabled]="!form.controls.detalles.length || excedeStock()">
         Continuar a confirmación
       </button>

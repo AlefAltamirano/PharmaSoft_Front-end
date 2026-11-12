@@ -1,0 +1,69 @@
+<section class="page">
+  <h1>Bitácora de auditoría</h1>
+  <p>Consulta de solo lectura de operaciones confirmadas y accesos.</p>
+  <form [formGroup]="form" (ngSubmit)="buscar()" class="card filtros">
+    <label>Usuario <input formControlName="usuario" /></label>
+    <label
+      >Acción
+      <select formControlName="accion">
+        <option value="">Todas</option>
+        @for (a of acciones; track a) {
+          <option [value]="a">{{ a }}</option>
+        }
+      </select></label
+    >
+    <label>Desde <input type="date" formControlName="desde" /></label
+    ><label>Hasta <input type="date" formControlName="hasta" /></label
+    ><button class="btn btn-primary" type="submit">Buscar</button>
+  </form>
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+  }
+  @if (recurso.isLoading()) {
+    <p role="status">Consultando bitácora…</p>
+  }
+  @if (resultado(); as p) {
+    <div style="overflow-x: auto">
+      <table class="tabla" data-testid="tabla-auditoria">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Acción</th>
+            <th>Entidad</th>
+            <th>ID</th>
+            <th>Detalle</th>
+            <th>Seguimiento</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of p.contenido; track e.id) {
+            <tr>
+              <td>{{ e.fecha | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+              <td>{{ e.usuario }}</td>
+              <td>{{ e.accion }}</td>
+              <td>{{ e.entidad }}</td>
+              <td>{{ e.entidadId ?? '—' }}</td>
+              <td>{{ e.detalle }}</td>
+              <td>
+                <code>{{ e.requestId }}</code>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7">No hay eventos para estos filtros.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <app-paginador
+      [pagina]="p.pagina"
+      [tamanio]="p.tamanio"
+      [totalElementos]="p.totalElementos"
+      [totalPaginas]="p.totalPaginas"
+      (cambioPagina)="irA($event)"
+      (cambioTamanio)="cambiarTamanio($event)"
+    />
+  }
+</section>

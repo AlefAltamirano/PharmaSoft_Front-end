@@ -1,7 +1,8 @@
+import { debounceTime,distinctUntilChanged,switchMap,startWith,catchError,of } from 'rxjs';
 import { CurrencyPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormArray,
   FormControl,
@@ -93,23 +94,11 @@ export class VentaForm implements OnInit {
     this.clientes().find(cliente => cliente.id === this.valores().clienteId)
   );
 
-  ngOnInit(): void {
-    this.buscando.set(true);
-    this.clienteService.listar().subscribe({
-      next: clientes => {
-        this.clientes.set(clientes.filter(cliente => cliente.estado));
-        this.buscando.set(false);
-      },
-      error: (err: HttpErrorResponse) => {
-        this.error.set(mensajeError(err));
-        this.buscando.set(false);
-      }
-    });
-    this.productoService.listar(0, 1000, 'nombre', 'asc').subscribe({
-      next: resultado => this.productos.set(resultado.contenido.filter(producto => producto.estado)),
-      error: (err: HttpErrorResponse) => this.error.set(mensajeError(err))
-    });
+  constructor(){
+    this.buscarCliente.valueChanges.pipe(startWith(''),debounceTime(300),distinctUntilChanged(),switchMap(texto=>this.clienteService.buscar(texto).pipe(catchError(()=>of([])))),takeUntilDestroyed()).subscribe(rows=>this.clientes.set(rows));
+    this.buscarProducto.valueChanges.pipe(startWith(''),debounceTime(300),distinctUntilChanged(),switchMap(texto=>this.productoService.buscar(texto).pipe(catchError(()=>of([])))),takeUntilDestroyed()).subscribe(rows=>this.productos.update(actuales=>{const seleccionados=actuales.filter(p=>this.form.controls.detalles.controls.some(d=>d.controls.productoId.value===p.id)&&!rows.some(n=>n.id===p.id));return [...seleccionados,...rows];}));
   }
+  ngOnInit():void {}
 
   protected seleccionarCliente(cliente: Cliente): void {
     this.form.controls.clienteId.setValue(cliente.id);

@@ -1,0 +1,2 @@
+# Colección API
+Importar PharmaSoft-S14.postman_collection.json en Postman. Definir passwords en valores locales/secretos, clienteId y productoId de prueba activos con stock. Ejecutar logins primero. La colección cubre 200/201, 400, 401, 403, 404 y 409. La venta válida debe anularse con la última petición. No exportar variables con tokens. La validación automática equivalente se registra en pruebas-api.json; no se afirma haber operado la interfaz de Postman.
