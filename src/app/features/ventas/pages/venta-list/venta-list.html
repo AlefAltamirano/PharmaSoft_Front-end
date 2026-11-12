@@ -32,10 +32,10 @@
     <p>{{ resumenFiltros() }}</p>
   </div>
 
-  @if (cargando()) {
+  @if (cargando() && !resultado()) {
     <p>Cargando ventas...</p>
   } @else {
-    <table class="tabla">
+    <table class="tabla" data-testid="tabla-ventas">
       <thead><tr><th>N.º</th><th>Fecha</th><th>Cliente</th><th>Estado</th><th>Total</th><th class="no-imprimir">Acción</th></tr></thead>
       <tbody>
         @for (venta of ventas(); track venta.id) {
@@ -56,12 +56,6 @@
     <footer class="solo-impresion total-impresion">
       Total de ventas registradas en la página: {{ totalPagina() | currency:'PEN':'S/' }}
     </footer>
-    @if (resultado(); as r) {
-      <footer class="paginador no-imprimir">
-        <button type="button" class="btn no-imprimir" (click)="irA(r.pagina - 1)" [disabled]="r.pagina === 0">Anterior</button>
-        <span>Página {{ r.totalPaginas ? r.pagina + 1 : 0 }} de {{ r.totalPaginas }}</span>
-        <button type="button" class="btn no-imprimir" (click)="irA(r.pagina + 1)" [disabled]="r.ultima">Siguiente</button>
-      </footer>
-    }
+    @if(resultado();as r){<app-paginador [pagina]="r.pagina" [tamanio]="r.tamanio" [totalPaginas]="r.totalPaginas" [totalElementos]="r.totalElementos" (cambioPagina)="irA($event)" (cambioTamanio)="cambiarTamanio($event)"/>}
   }
 </section>

@@ -26,19 +26,12 @@ export class ProductoService {
       params = params.set('categoriaId', categoriaId);
     }
 
-    return this.http.get<PaginaResponse<Producto> | ProductoApi[]>(this.url, { params }).pipe(
-      map(respuesta => Array.isArray(respuesta)
-        ? this.crearPagina(
-          categoriaId === null
-            ? respuesta
-            : respuesta.filter(producto => (producto.categoriaId ?? producto.categoria?.id) === categoriaId),
-          pagina,
-          tamanio,
-          ordenarPor,
-          direccion
-        )
-        : { ...respuesta, contenido: respuesta.contenido.map(producto => this.normalizar(producto as ProductoApi)) })
-    );
+    return this.http.get<PaginaResponse<Producto>>(this.url,{params}).pipe(
+      map(respuesta=>({...respuesta,contenido:respuesta.contenido.map(p=>this.normalizar(p as ProductoApi))})));
+  }
+
+  buscar(texto:string):Observable<Producto[]> {
+    return this.http.get<ProductoApi[]>(`${this.url}/buscar`,{params:{texto}}).pipe(map(rows=>rows.map(p=>this.normalizar(p))));
   }
 
   obtener(id: number): Observable<Producto> {
@@ -57,31 +50,6 @@ export class ProductoService {
     return this.http.delete<void>(`${this.url}/${id}`);
   }
 
-  private crearPagina(productos: ProductoApi[], pagina: number, tamanio: number,
-    ordenarPor: OrdenProducto, direccion: Direccion): PaginaResponse<Producto> {
-    const inicio = pagina * tamanio;
-    const ordenados = [...productos].sort((a, b) => {
-      const izquierda = a[ordenarPor];
-      const derecha = b[ordenarPor];
-      const comparacion = typeof izquierda === 'string' && typeof derecha === 'string'
-        ? izquierda.localeCompare(derecha, 'es', { sensitivity: 'base' })
-        : Number(izquierda) - Number(derecha);
-      return direccion === 'asc' ? comparacion : -comparacion;
-    });
-    const contenido = ordenados
-      .slice(inicio, inicio + tamanio)
-      .map(producto => this.normalizar(producto));
-
-    return {
-      contenido,
-      pagina,
-      tamanio,
-      totalElementos: productos.length,
-      totalPaginas: productos.length ? Math.ceil(productos.length / tamanio) : 0,
-      ultima: inicio + tamanio >= productos.length
-    };
-  }
-
   private normalizar(producto: ProductoApi): Producto {
     return {
       id: producto.id,
@@ -90,7 +58,7 @@ export class ProductoService {
       stock: producto.stock,
       estado: producto.estado,
       categoriaId: producto.categoriaId ?? producto.categoria?.id ?? 0,
-      categoriaNombre: producto.categoriaNombre ?? producto.categoria?.nombre ?? 'Sin categoría',
+      categoriaNombre: producto.categoriaNombre ?? producto.categoria?.nombre ?? 'Sin categorÃ­a',
       fechaCreacion: producto.fechaCreacion,
       fechaModificacion: producto.fechaModificacion
     };

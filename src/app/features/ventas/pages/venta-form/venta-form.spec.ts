@@ -3,9 +3,12 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
 import { VentaForm } from './venta-form';
+import { vi, afterEach } from 'vitest';
+afterEach(()=>vi.useRealTimers());
 
 describe('VentaForm', () => {
   it('muestra en la confirmación el cliente elegido después de cambiarlo', async () => {
+    vi.useFakeTimers();
     TestBed.configureTestingModule({
       imports: [VentaForm],
       providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])]
@@ -13,11 +16,12 @@ describe('VentaForm', () => {
     const fixture = TestBed.createComponent(VentaForm);
     const http = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
-    http.expectOne(req => req.url.endsWith('/clientes')).flush([
+    vi.advanceTimersByTime(300);
+    http.expectOne(req => req.url.includes('/clientes/buscar')).flush([
       { id: 1, dni: '11111111', nombres: 'Ana', apellidos: 'Uno', estado: true },
       { id: 2, dni: '22222222', nombres: 'Beatriz', apellidos: 'Dos', estado: true }
     ]);
-    http.expectOne(req => req.url.endsWith('/productos')).flush([
+    http.expectOne(req => req.url.includes('/productos/buscar')).flush([
       { id: 1, nombre: 'Producto', precio: 10, stock: 5, estado: true }
     ]);
     fixture.detectChanges();

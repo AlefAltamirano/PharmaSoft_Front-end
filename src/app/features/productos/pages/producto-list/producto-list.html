@@ -7,7 +7,7 @@
   <div class="filtros">
     <label>
       Categoría
-      <select class="input" (change)="filtrarPorCategoria($event)">
+      <select class="input" [value]="categoriaId()||''" (change)="filtrarPorCategoria($event)">
         <option value="">Todas las categorías</option>
         @for (c of categorias(); track c.id) {
           <option [value]="c.id">{{ c.nombre }}</option>
@@ -15,24 +15,17 @@
       </select>
     </label>
 
-    <label>
-      Registros por página
-      <select class="input" [value]="tamanio()" (change)="cambiarTamanio($event)">
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="20">20</option>
-      </select>
-    </label>
+
   </div>
 
   @if (error()) {
     <div class="alerta">{{ error() }}</div>
   }
 
-  @if (cargando()) {
+  @if (cargando() && !resultado()) {
     <p>Cargando productos...</p>
   } @else {
-    <table class="tabla">
+    <table class="tabla" data-testid="tabla-productos">
       <thead>
         <tr>
           <th><button type="button" class="orden" (click)="ordenar('id')">ID ↕</button></th>
@@ -70,27 +63,6 @@
       </tbody>
     </table>
 
-    <!-- Paginador con evaluación matemática directa -->
-    @if (resultado(); as r) {
-      <footer class="paginador">
-        <button
-          type="button"
-          class="btn"
-          [disabled]="r.pagina === 0"
-          (click)="irA(r.pagina - 1)">
-          Anterior
-        </button>
-
-        <span>Página {{ r.pagina + 1 }} de {{ r.totalPaginas || 1 }}</span>
-
-        <button
-          type="button"
-          class="btn"
-          [disabled]="r.pagina >= (r.totalPaginas - 1)"
-          (click)="irA(r.pagina + 1)">
-          Siguiente
-        </button>
-      </footer>
-    }
+    @if(resultado();as r){<app-paginador [pagina]="r.pagina" [tamanio]="r.tamanio" [totalPaginas]="r.totalPaginas" [totalElementos]="r.totalElementos" (cambioPagina)="irA($event)" (cambioTamanio)="cambiarTamanio($event)"/>}
   }
 </section>
