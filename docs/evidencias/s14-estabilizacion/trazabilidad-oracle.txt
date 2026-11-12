@@ -1,0 +1,21 @@
+
+	ID CREADO_POR												ESTADO			  TOTAL
+---------- ---------------------------------------------------------------------------------------------------- -------------------- ----------
+     20067 VENDEDOR												ANULADA 		     23
+
+
+USUARIO 											     ACCION							  ENTIDAD_ID
+---------------------------------------------------------------------------------------------------- ------------------------------------------------------------ ----------
+REQUEST_ID
+------------------------------------
+VENDEDOR											     VENTA_REGISTRADA						       20067
+1a034758-6f2a-436c-aff3-88b64f939d95
+
+ADMIN												     VENTA_ANULADA						       20067
+b48bb490-858d-47ab-be17-866b5e6f2217
+
+
+Inmutabilidad verificada: UPDATE rechazado por el trigger
+
+PL/SQL procedure successfully completed.
+

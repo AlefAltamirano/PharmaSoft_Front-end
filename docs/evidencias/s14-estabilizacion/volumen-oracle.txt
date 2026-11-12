@@ -1,0 +1,23 @@
+
+PL/SQL procedure successfully completed.
+
+
+'PRODUCTOS='||COUNT(*)
+--------------------------------------------------
+productos=5014
+
+
+'VENTAS='||COUNT(*)
+-----------------------------------------------
+ventas=20013
+
+
+'PRODUCTOS_CARGA='||COUNT(*)
+--------------------------------------------------------
+productos_carga=5000
+
+
+'VENTAS_CARGA='||COUNT(*)
+-----------------------------------------------------
+ventas_carga=20000
+

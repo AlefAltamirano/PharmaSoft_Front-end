@@ -1,0 +1,108 @@
+[
+  {
+    "ensayo": 1,
+    "segundos": 21.6,
+    "modalidad": "Recorrido real automatizado; sin narración oral",
+    "pasos": [
+      {
+        "nombre": "1. Contexto: aplicación integrada y sesión de vendedor",
+        "segundos": 3.19
+      },
+      {
+        "nombre": "2. Volumen: veinte filas por página; URL y recarga conservan la página",
+        "segundos": 2.39
+      },
+      {
+        "nombre": "3. Cliente recién creado y búsqueda de productos activos",
+        "segundos": 3.32
+      },
+      {
+        "nombre": "4. Venta confirmada: dos unidades, importe calculado por el servidor",
+        "segundos": 2.27
+      },
+      {
+        "nombre": "5. Stock actualizado sin F5: de cien a noventa y ocho",
+        "segundos": 2.58
+      },
+      {
+        "nombre": "6. Seguridad: el vendedor no puede consultar la auditoría",
+        "segundos": 2.11
+      },
+      {
+        "nombre": "7. Administrador: reporte de ventas y productos de la venta",
+        "segundos": 3.17
+      },
+      {
+        "nombre": "8. Auditoría: usuario, acción, entidad y código de seguimiento",
+        "segundos": 2.14
+      }
+    ],
+    "ventaId": 20068,
+    "productoId": 5056,
+    "creadoPor": "VENDEDOR",
+    "evento": {
+      "accion": "VENTA_REGISTRADA",
+      "detalle": "Total=23.0; líneas=1",
+      "entidad": "Venta",
+      "entidadId": 20068,
+      "fecha": "2026-11-12T10:17:15.120479",
+      "id": 212,
+      "requestId": "510090c5-2b3f-441d-bc27-523a245fc8df",
+      "usuario": "VENDEDOR"
+    },
+    "errores": []
+  },
+  {
+    "ensayo": 2,
+    "segundos": 21.35,
+    "modalidad": "Recorrido real automatizado; sin narración oral",
+    "pasos": [
+      {
+        "nombre": "1. Contexto: aplicación integrada y sesión de vendedor",
+        "segundos": 3.08
+      },
+      {
+        "nombre": "2. Volumen: veinte filas por página; URL y recarga conservan la página",
+        "segundos": 2.4
+      },
+      {
+        "nombre": "3. Cliente recién creado y búsqueda de productos activos",
+        "segundos": 3.29
+      },
+      {
+        "nombre": "4. Venta confirmada: dos unidades, importe calculado por el servidor",
+        "segundos": 2.29
+      },
+      {
+        "nombre": "5. Stock actualizado sin F5: de cien a noventa y ocho",
+        "segundos": 2.52
+      },
+      {
+        "nombre": "6. Seguridad: el vendedor no puede consultar la auditoría",
+        "segundos": 2.11
+      },
+      {
+        "nombre": "7. Administrador: reporte de ventas y productos de la venta",
+        "segundos": 3.16
+      },
+      {
+        "nombre": "8. Auditoría: usuario, acción, entidad y código de seguimiento",
+        "segundos": 2.16
+      }
+    ],
+    "ventaId": 20069,
+    "productoId": 5057,
+    "creadoPor": "VENDEDOR",
+    "evento": {
+      "accion": "VENTA_REGISTRADA",
+      "detalle": "Total=23.0; líneas=1",
+      "entidad": "Venta",
+      "entidadId": 20069,
+      "fecha": "2026-11-12T10:17:36.890265",
+      "id": 219,
+      "requestId": "7193bb5f-ff6f-45fc-9211-80aaca7d1d03",
+      "usuario": "VENDEDOR"
+    },
+    "errores": []
+  }
+]
