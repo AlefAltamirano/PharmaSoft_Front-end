@@ -4,11 +4,9 @@ import { AuthService } from '../auth/auth-service';
 
 export const authGuard: CanActivateFn = (_route, state) => {
   const auth = inject(AuthService);
-  if (auth.autenticado()) {
-    return true;
-  }
-  const returnUrl = state.url === '/' ? '/inicio' : state.url;
-  return inject(Router).createUrlTree(['/login'], { queryParams: { returnUrl } });
+  return auth.autenticado()
+    ? true
+    : inject(Router).createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
 };
 
 export const invitadoGuard: CanActivateFn = () =>

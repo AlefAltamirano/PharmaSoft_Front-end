@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable, tap, timeout } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { LoginRequest, LoginResponse, Permiso, Sesion } from './auth.model';
+import { LoginRequest, LoginResponse, Permiso, Sesion, UsuarioPerfil } from './auth.model';
 
 const CLAVE_SESION = 'pharmasoft.sesion';
 
@@ -11,16 +11,21 @@ const CLAVE_SESION = 'pharmasoft.sesion';
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
-  private readonly sesionActual = signal<Sesion | null>(this.leerSesionGuardada());
-  private temporizador: ReturnType<typeof setTimeout> | undefined;
+  private temporizador: ReturnType<typeof setInterval> | null = null;
+
+  readonly sesionActual = signal<Sesion | null>(this.leerSesionGuardada());
   readonly sesion = this.sesionActual.asReadonly();
+  readonly segundosRestantes = signal(0);
   readonly autenticado = computed(() => {
     const sesion = this.sesionActual();
     return sesion !== null && sesion.expiraEn > Date.now();
   });
+  readonly porVencer = computed(() =>
+    this.autenticado() && this.segundosRestantes() > 0 && this.segundosRestantes() <= 120
+  );
 
   constructor() {
-    this.programarExpiracion(this.sesionActual());
+    this.iniciarTemporizador(this.sesionActual());
   }
 
   login(credenciales: LoginRequest): Observable<Sesion> {
@@ -36,66 +41,85 @@ export class AuthService {
       tap(sesion => {
         this.guardarSesion(sesion);
         this.sesionActual.set(sesion);
-        this.programarExpiracion(sesion);
+        this.iniciarTemporizador(sesion);
       })
     );
   }
 
+  obtenerPerfil(): Observable<UsuarioPerfil> {
+    return this.http.get<UsuarioPerfil>(`${environment.apiUrl}/auth/me`).pipe(
+      timeout({ first: 15000 }),
+      map(perfil => ({
+        username: perfil.username,
+        nombreCompleto: perfil.nombreCompleto,
+        roles: Array.isArray(perfil.roles) ? perfil.roles.map(String) : [],
+        permisos: Array.isArray(perfil.permisos) ? perfil.permisos.map(String) : []
+      }))
+    );
+  }
+
   cerrarSesion(motivo?: 'expirada', volverA?: string): void {
-    if (this.temporizador) {
-      clearTimeout(this.temporizador);
-      this.temporizador = undefined;
-    }
+    this.detenerTemporizador();
+    this.sesionActual.set(null);
+    this.segundosRestantes.set(0);
     try {
       sessionStorage.removeItem(CLAVE_SESION);
     } catch {
+      // sessionStorage may be unavailable in non-browser environments.
     }
-    this.sesionActual.set(null);
+
     const destino = volverA && volverA.startsWith('/') && !volverA.startsWith('//')
       ? volverA
       : undefined;
-    const queryParams = {
-      ...(motivo === 'expirada' ? { expirada: '1' } : {}),
-      ...(destino && destino !== '/login' ? { returnUrl: destino } : {})
-    };
-    void this.router.navigate(['/login'], { queryParams });
+    void this.router.navigate(['/login'], {
+      queryParams: {
+        ...(motivo === 'expirada' ? { expirada: '1' } : {}),
+        ...(destino && destino !== '/login' ? { returnUrl: destino } : {})
+      }
+    });
   }
 
   token(): string | null {
     const sesion = this.sesionActual();
     if (!sesion || sesion.expiraEn <= Date.now()) {
-      if (sesion) this.cerrarSesion('expirada', this.router.url);
+      if (sesion) {
+        this.cerrarSesion('expirada', this.router.url);
+      }
       return null;
     }
     return sesion.token;
   }
 
   tienePermiso(permiso: Permiso): boolean {
-    const requerido = permiso.trim().toUpperCase();
     const permisos = this.sesionActual()?.permisos ?? [];
-    return permisos.some(actual => {
-      const concedido = actual.trim().toUpperCase();
-      return concedido === '*' || concedido === requerido ||
-        (concedido.endsWith('_*') && requerido.startsWith(concedido.slice(0, -1)));
-    });
+    return permisos.some(actual => actual === permiso);
   }
 
   private leerSesionGuardada(): Sesion | null {
     try {
       const valor = sessionStorage.getItem(CLAVE_SESION);
-      if (!valor) return null;
+      if (!valor) {
+        return null;
+      }
       const sesion = JSON.parse(valor) as Sesion;
-      if (!sesion.token || !Number.isFinite(sesion.expiraEn) || sesion.expiraEn <= Date.now()) {
+      if (
+        typeof sesion.token !== 'string' ||
+        typeof sesion.expiraEn !== 'number' ||
+        typeof sesion.username !== 'string' ||
+        !Array.isArray(sesion.roles) ||
+        !Array.isArray(sesion.permisos) ||
+        sesion.expiraEn <= Date.now()
+      ) {
         sessionStorage.removeItem(CLAVE_SESION);
         return null;
       }
-      return {
-        ...sesion,
-        roles: Array.isArray(sesion.roles) ? sesion.roles : [],
-        permisos: Array.isArray(sesion.permisos) ? sesion.permisos : []
-      };
+      return sesion;
     } catch {
-      try { sessionStorage.removeItem(CLAVE_SESION); } catch { }
+      try {
+        sessionStorage.removeItem(CLAVE_SESION);
+      } catch {
+        // Ignore storage cleanup failures.
+      }
       return null;
     }
   }
@@ -104,13 +128,33 @@ export class AuthService {
     try {
       sessionStorage.setItem(CLAVE_SESION, JSON.stringify(sesion));
     } catch {
+      // The in-memory signal remains the source of truth for the current tab.
     }
   }
 
-  private programarExpiracion(sesion: Sesion | null): void {
-    if (this.temporizador) clearTimeout(this.temporizador);
-    if (!sesion) return;
-    const demora = Math.max(0, sesion.expiraEn - Date.now());
-    this.temporizador = setTimeout(() => this.cerrarSesion('expirada', this.router.url), demora);
+  private iniciarTemporizador(sesion: Sesion | null): void {
+    this.detenerTemporizador();
+    if (!sesion) {
+      this.segundosRestantes.set(0);
+      return;
+    }
+    this.actualizarSegundos(sesion);
+    this.temporizador = setInterval(() => this.actualizarSegundos(sesion), 1000);
+  }
+
+  private actualizarSegundos(sesion: Sesion): void {
+    const segundos = Math.max(0, Math.ceil((sesion.expiraEn - Date.now()) / 1000));
+    this.segundosRestantes.set(segundos);
+    if (segundos === 0) {
+      this.detenerTemporizador();
+      this.cerrarSesion('expirada', this.router.url);
+    }
+  }
+
+  private detenerTemporizador(): void {
+    if (this.temporizador !== null) {
+      clearInterval(this.temporizador);
+      this.temporizador = null;
+    }
   }
 }

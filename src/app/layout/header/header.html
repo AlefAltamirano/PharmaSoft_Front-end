@@ -10,6 +10,7 @@
       {{ sesion.nombreCompleto || sesion.username }} · {{ sesion.roles.join(', ') }}
       · Expira {{ sesion.expiraEn | date: 'HH:mm' }}
     </span>
-    <button type="button" class="btn-menu" (click)="cerrarSesion()">Salir</button>
+    <a routerLink="/mi-cuenta" class="enlace-cuenta">Mi cuenta</a>
+    <button type="button" class="btn-salir" (click)="cerrarSesion()">Cerrar sesión</button>
   }
 </header>

@@ -7,14 +7,17 @@ import { ClienteService } from '../../../clientes/services/cliente-service';
 import { mensajeError } from '../../../../core/utils/http-error';
 import { Venta } from '../../models/venta.model';
 import { VentaService } from '../../services/venta-service';
+import { AuthService } from '../../../../core/auth/auth-service';
+import { SiPermisoDirective } from '../../../../shared/directives/si-permiso.directive';
 
 @Component({
   selector: 'app-venta-detalle',
-  imports: [CurrencyPipe, DatePipe, RouterLink],
+  imports: [CurrencyPipe, DatePipe, RouterLink, SiPermisoDirective],
   templateUrl: './venta-detalle.html',
   styleUrl: './venta-detalle.css'
 })
 export class VentaDetalle implements OnInit {
+  private readonly auth = inject(AuthService);
   private readonly ventaService = inject(VentaService);
   private readonly clienteService = inject(ClienteService);
   private readonly route = inject(ActivatedRoute);
@@ -50,7 +53,8 @@ export class VentaDetalle implements OnInit {
 
   protected anularVenta(): void {
     const ventaActual = this.venta();
-    if (!ventaActual || ventaActual.estado !== 'REGISTRADA' || this.anulando()) return;
+    if (!this.auth.tienePermiso('VENTAS_REGISTRAR') ||
+      !ventaActual || ventaActual.estado !== 'REGISTRADA' || this.anulando()) return;
     if (!window.confirm('¿Está seguro de que desea anular esta venta?')) return;
 
     this.anulando.set(true);

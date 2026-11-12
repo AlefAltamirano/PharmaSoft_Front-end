@@ -10,14 +10,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const apiUrl = environment.apiUrl.replace(/\/+$/, '');
   const isApiRequest = req.url === apiUrl || req.url.startsWith(`${apiUrl}/`);
-  const isLogin = req.url === `${apiUrl}/auth/login`;
+  const isLoginRequest = req.url.split('?')[0] === `${apiUrl}/auth/login`;
 
   return next(req).pipe(
-    catchError((error: HttpErrorResponse) => {
-      if (isApiRequest && error.status === 401 && !isLogin) {
+    catchError((error: unknown) => {
+      if (error instanceof HttpErrorResponse && isApiRequest && error.status === 401 && !isLoginRequest) {
         auth.cerrarSesion('expirada', router.url);
-      } else if (isApiRequest && error.status === 403) {
-        void router.navigate(['/acceso-denegado']);
       }
       return throwError(() => error);
     })

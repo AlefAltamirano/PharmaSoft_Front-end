@@ -90,7 +90,7 @@ export class VentaForm implements OnInit {
   );
 
   protected readonly clienteSeleccionado = computed(() =>
-    this.clientes().find(cliente => cliente.id === this.form.controls.clienteId.value)
+    this.clientes().find(cliente => cliente.id === this.valores().clienteId)
   );
 
   ngOnInit(): void {
@@ -151,7 +151,7 @@ export class VentaForm implements OnInit {
   }
 
   protected guardar(): void {
-    if (this.form.invalid || !this.form.controls.detalles.length || this.excedeStock()) {
+    if (this.guardando() || this.form.invalid || !this.form.controls.detalles.length || this.excedeStock()) {
       this.form.markAllAsTouched();
       return;
     }
@@ -179,7 +179,7 @@ export class VentaForm implements OnInit {
   private crearDetalle(productoId: number): DetalleForm {
     return this.fb.group({
       productoId: [productoId, Validators.required],
-      cantidad: [1, [Validators.required, Validators.min(1)]]
+      cantidad: [1, [Validators.required, Validators.min(1), Validators.pattern(/^\d+$/)]]
     });
   }
 }

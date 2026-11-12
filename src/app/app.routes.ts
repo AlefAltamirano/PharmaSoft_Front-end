@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { MainLayout } from './layout/main-layout/main-layout';
 import { authGuard, invitadoGuard } from './core/guards/auth-guard';
 import { permisoGuard } from './core/guards/permiso-guard';
 
@@ -12,7 +11,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: MainLayout,
+    loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayout),
     canActivate: [authGuard],
     canActivateChild: [authGuard],
     children: [
@@ -51,13 +50,18 @@ export const routes: Routes = [
         canActivate: [permisoGuard],
         data: { permiso: 'REPORTES_VER' },
         loadChildren: () => import('./features/reportes/reportes.routes').then(m => m.REPORTES_ROUTES)
+      },
+      {
+        path: 'mi-cuenta',
+        title: 'Mi cuenta',
+        loadComponent: () => import('./features/auth/pages/mi-cuenta/mi-cuenta').then(m => m.MiCuenta)
+      },
+      {
+        path: 'acceso-denegado',
+        title: 'Acceso denegado',
+        loadComponent: () => import('./shared/pages/acceso-denegado/acceso-denegado').then(m => m.AccesoDenegado)
       }
     ]
-  },
-  {
-    path: 'acceso-denegado',
-    title: 'Acceso denegado',
-    loadComponent: () => import('./shared/pages/acceso-denegado/acceso-denegado').then(m => m.AccesoDenegado)
   },
   {
     path: '**',

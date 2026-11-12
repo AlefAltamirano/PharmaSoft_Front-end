@@ -31,7 +31,7 @@ export class ProductoForm implements OnInit {
   protected readonly categorias = signal<Categoria[]>([]);
   protected readonly producto = signal<Pick<Producto, 'categoriaId'> | null>(null);
   protected readonly form = this.fb.group({
-    nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(150)]],
+    nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     precio: [0, [Validators.required, Validators.min(0.01)]],
     stock: [0, [Validators.required, Validators.min(0), Validators.pattern(/^\d+$/)]],
     estado: [true],

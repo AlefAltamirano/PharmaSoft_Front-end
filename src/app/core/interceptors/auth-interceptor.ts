@@ -4,11 +4,13 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../auth/auth-service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const auth = inject(AuthService);
   const apiUrl = environment.apiUrl.replace(/\/+$/, '');
-  if (req.url !== apiUrl && !req.url.startsWith(`${apiUrl}/`)) return next(req);
+  const auth = inject(AuthService);
   const token = auth.token();
-  return next(token && !req.headers.has('Authorization')
-    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
-    : req);
+  if (!token || (req.url !== apiUrl && !req.url.startsWith(`${apiUrl}/`))) {
+    return next(req);
+  }
+  return next(req.headers.has('Authorization')
+    ? req
+    : req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }));
 };
