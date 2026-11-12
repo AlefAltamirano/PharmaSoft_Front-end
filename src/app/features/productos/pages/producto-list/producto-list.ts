@@ -14,7 +14,7 @@ import {Paginador} from '../../../../shared/components/paginador/paginador';
 export class ProductoList {
  private readonly service=inject(ProductoService);private readonly router=inject(Router);
  readonly pagina=input(0,{transform:(v:unknown)=>numberAttribute(v,0)});readonly tamanio=input(20,{transform:(v:unknown)=>numberAttribute(v,20)});
- readonly orden=input<OrdenProducto>('nombre');readonly dir=input<Direccion>('asc');readonly categoriaId=input(0,{transform:(v:unknown)=>numberAttribute(v,0)});
+ readonly orden=input<OrdenProducto,unknown>('nombre',{transform:v=>(v??'nombre') as OrdenProducto});readonly dir=input<Direccion,unknown>('asc',{transform:v=>(v??'asc') as Direccion});readonly categoriaId=input(0,{transform:(v:unknown)=>numberAttribute(v,0)});
  protected readonly categorias=toSignal(inject(CategoriaService).listar(),{initialValue:[]});
  protected readonly recurso=rxResource({params:()=>({pagina:this.pagina(),tamanio:this.tamanio(),orden:this.orden(),dir:this.dir(),categoria:this.categoriaId()}),stream:({params:p})=>this.service.listar(p.pagina,p.tamanio,p.orden,p.dir,p.categoria||null)});
  protected readonly resultado=linkedSignal<PaginaResponse<Producto>|undefined,PaginaResponse<Producto>|undefined>({source:()=>this.recurso.value(),computation:(n,p)=>n??p?.value});

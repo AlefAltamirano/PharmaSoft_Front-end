@@ -96,7 +96,7 @@ export class VentaForm implements OnInit {
 
   constructor(){
     this.buscarCliente.valueChanges.pipe(startWith(''),debounceTime(300),distinctUntilChanged(),switchMap(texto=>this.clienteService.buscar(texto).pipe(catchError(()=>of([])))),takeUntilDestroyed()).subscribe(rows=>this.clientes.set(rows));
-    this.buscarProducto.valueChanges.pipe(startWith(''),debounceTime(300),distinctUntilChanged(),switchMap(texto=>this.productoService.buscar(texto).pipe(catchError(()=>of([])))),takeUntilDestroyed()).subscribe(rows=>this.productos.update(actuales=>{const seleccionados=actuales.filter(p=>this.form.controls.detalles.controls.some(d=>d.controls.productoId.value===p.id));return [...seleccionados,...rows.filter(p=>!seleccionados.some(a=>a.id===p.id))];}));
+    this.buscarProducto.valueChanges.pipe(startWith(''),debounceTime(300),distinctUntilChanged(),switchMap(texto=>this.productoService.buscar(texto).pipe(catchError(()=>of([])))),takeUntilDestroyed()).subscribe(rows=>this.productos.update(actuales=>{const seleccionados=actuales.filter(p=>this.form.controls.detalles.controls.some(d=>d.controls.productoId.value===p.id)&&!rows.some(n=>n.id===p.id));return [...seleccionados,...rows];}));
   }
   ngOnInit():void {}
 
